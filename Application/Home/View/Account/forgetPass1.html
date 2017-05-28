@@ -1,0 +1,132 @@
+<form action="__URL__/forgetPass" id="forgetPass" method="post" way="ajax">  
+  <div class="p000-01">
+        <div class="loginbox">
+            <script>
+                $(function () {
+                    $(".inputbox>input").focus(function () {
+                        $(this).parents('.inputbox').addClass("focus");
+                    });
+                    $(".inputbox>input").blur(function () {
+                        $(this).parents('.inputbox').removeClass("focus");
+                    });
+                })
+                function eye(o) {
+                    if($(o).hasClass('active')){
+                        $(o).removeClass('active').siblings('input').attr("type","password");
+                    }else{
+                        $(o).addClass('active').siblings('input').attr("type","text");
+                    }
+                }
+            </script>
+            <div class="login-01">
+
+                <h1>忘记密码</h1>
+                <div>已有账户？ <a href="{:U('Account/login')}">请登录</a></div>
+            </div>
+
+            <div class="loginrow">
+            <div class="inputbox">
+                <div class="input-icon"><img src="__PUBLIC__/img/icon-06.png" alt=""></div>
+                <input class="verify phoneNumber" id="mobile" name="mobile" type="tel" placeholder="请输入手机号" errorMsg="手机号格式错误" style="font-size:0.3rem;">
+            </div>
+            <!-- <div class="error">手机号码不正确</div> -->
+        </div>
+            <div class="loginrow">
+            <div class="yz cf">
+                <div class="inputbox">
+                    <div class="input-icon"><img src="__PUBLIC__/img/icon-07.png" alt=""></div>
+                    <input type="text" class="p07-pwd mt10" name="verify" errorMsg="验证码错误"/>
+                </div>
+                <!-- <a href=""><img src="img/f-yz.jpg" style="width: 157px;height: 46px;" alt=""></a> -->
+                <img src="__URL__/getVerify" alt="" class="imgVerify">
+                <a href="javascript:;" class="p02-djs fr imgVerify"></a>
+            </div>
+            <!-- <div class="error">图形验证码不正确</div> -->
+        </div>
+            <div class="loginrow">
+           <div class="yz cf">
+               <div class="inputbox">
+                   <div class="input-icon"><img src="__PUBLIC__/img/icon-08.png" alt=""></div>
+                   <input type="text" placeholder="请输入短信验证码" class="p07-pwd mt10" name="code" id="code" errorMsg="验证码错误"/>
+               </div>
+               <!-- <a href="" class="btn-yz">获取验证码</a> -->
+               <a href="javascript:;"  class="btn-yz register_btn b" disClass="bg-w">获取验证码</a>
+           </div>
+            <!-- <div class="error">短信验证码不正确</div> -->
+        </div>
+            <div class="loginrow">
+            <div class="inputbox">
+                <div class="input-icon"><img src="__PUBLIC__/img/icon-09.png" alt=""></div>
+               <input type="password" name="password" value="">
+                <a href="javascript:;" onclick="eye(this)" class="eye-pwd"></a>
+            </div>
+            <!-- <div class="error tishi">建议密码由8位以上数字、字母和特殊字符组成</div> -->
+        </div>
+
+
+            <!-- <a href="" class="btn-lan mt-20">提交</a> -->
+            <button type="submit" class="btn-lan mt-20 register_2">确 认</button>
+        </div>
+    </div>
+</form>
+<!--     <form  id="forgetPass" method="post" ajax="true">
+        <div class="inputbox clearfix"><span class="b"></span><input class="verify phoneNumber" id="mobile" name="mobile" type="tel" placeholder="请输入手机号" errorMsg="手机号格式错误" style="font-size:0.3rem;"></div>
+            <div class="p2yzmbox">
+                <img src="__URL__/getVerify" alt="" class="imgVerify">
+                <a href="javascript:;" class="p02-djs fr imgVerify">换一张</a>
+            </div>
+            <input type="text" class="p07-pwd mt10" name="verify" errorMsg="验证码错误"/>
+        <button type="button" class="btn-hong bg-r mt70 register_btn b" disClass="bg-w">获取验证码</button>
+        <input type="text" placeholder="请输入短信验证码" class="p07-pwd mt10" name="code" id="code" errorMsg="验证码错误"/>
+        <input type="password" name="password" value="">
+        <input type="password" name="repassword" value="">
+		<button type="button" class="btn-hong bg-lan1 b register_2">确 认</button>
+    </form> -->
+
+    <script>
+    $('.imgVerify').click(function(){
+	    $('.imgVerify:first').prop('src','__URL__/getVerify');
+	  })
+     $('.register_btn').click(function(){
+
+      if (!verify($('input[name="mobile"]'))) {
+        return false;
+      }
+      $.ajax({
+        url: "__URL__/checVerify",
+        type: 'POST',
+        data: {mobile:$('#mobile').val(),type:2,verify:$('input[name="verify"]').val()},
+        }).done(function(ret){
+          console.log(ret);
+            if (ret.status) {
+               // $.toast('发送成功');
+               layer.msg('发送成功', {icon: 1,time: 1000});
+            }else{
+            	layer.msg(ret.info, {icon: 2,time: 1000});
+            }
+        });
+  	})
+
+	$('.register_2').attr("disabled",true); 
+  	$('#code').blur(function(){ 
+	    if ($('#code').val() != '') { 
+	       $.ajax({
+	        url: "__URL__/checkCode",
+	        type: 'POST',
+	        data: {mobile:$('#mobile').val(),type:2,code:$('#code').val()},
+	        }).done(function(ret){
+	            if (ret.status) {
+	              $('.register_2').attr("disabled",false); 
+	              return true;
+	                
+	            }else{
+	            	layer.msg(ret.info, {icon: 2,time: 1000});
+	            }
+	        });
+	    } 
+    }) 
+
+    //  $('.register_2').click(function(){
+    // 	ajax_submit_form('forgetPass','forgetPass');
+    // });
+    </script>

@@ -1,0 +1,79 @@
+<div class="page">
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span></div>
+        <ul>
+            <li>请按规则详细填写运营参数</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" name="form1" action="{:U('Operation/operation_rule')}">
+        <input type="hidden" name="form_submit" value="ok"/>
+
+        <div class="ncap-form-default">
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label for="zc_fee_tqtx">提现手续费</label>
+                </dt>
+                <dd class="opt">
+                    <input  id="zc_fee_tqtx" name="zc_fee_tqtx" value="{$info.zc_fee_tqtx}" class="input-txt" type="text">
+                    <p class="notic">以10-50|0-0|3-30的形式填入，数字从左到右依次表示超出回款资金总额的每笔收取总额的千分之10作为手续费,最大手续费上限50元;提现在回款总金额内的每笔收费千分之0元，手续费上限0元;单日单笔提现上限3万,单日提现资金上限30万;如果填写形式为10|5-50,表示提现手续费为10元,单笔提现限额为5万,单日提现资金上限50万;(fee_tqtx)</p>
+                </dd>
+            </dl> -->
+            <dl class="row">
+                <dt class="tit">
+                    <label for="zc_experience_money">赠送体验金</label>
+                </dt>
+                <dd class="opt">
+                    <input pattern="^\d{1,}$" id="zc_experience_money" name="zc_experience_money" value="{$info.zc_experience_money}" class="input-txt" type="text">
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+           <!--  <dl class="row">
+                <dt class="tit">
+                    <label for="zc_today_reward">回款投标自动奖励</label>
+                </dt>
+                <dd class="opt">
+                    <input  name="zc_today_reward" value="{$info.zc_today_reward}" class="input-txt" type="text">
+                    <span class="err">1|1.5|2</span>
+                    <p class="notic">以1|1.5|2的形式填入，表示回款续投一月标奖励1‰回款续投二月标奖励1.5‰ 回款续投三月标及以上奖励2‰，如果投标金额大于回款资金池金额，有效续投奖励以回款金额资金池总额为标准，否则以投标金额为准(today_reward)</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="zc_is_manual">是否开启手动手机验证</label>
+                </dt>
+                <dd class="opt">
+                    <input pattern="^\d{1,}$" name="zc_is_manual" id="zc_is_manual" value="{$info.zc_is_manual}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">0代表不开启，则由系统自动向会员发送手机验证码；1代表开启，表示由管理员在后台手动审核会员的手机验证</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="zc_edit_bank">银行卡修改开关</label>
+                </dt>
+                <dd class="opt">
+                    <input  name="zc_edit_bank" id="zc_edit_bank" value="{$info.zc_edit_bank}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">1表示可以修改，0表示不可以修改(edit_bank)</p>
+                </dd>
+            </dl> -->
+           <!--  <dl class="row">
+                <dt class="tit">
+                    <label for="zc_is_phone_code">是否开启短信发送图形验证码</label>
+                </dt>
+                <dd class="opt">
+                    <input  name="zc_is_phone_code" id="zc_is_phone_code" value="{$info.zc_is_phone_code}" class="input-txt" type="text">
+                    <span class="err"></span>
+                    <p class="notic">代表不开启，不需要输入图形验证码即可发送手机验证码；1代表开启，表示需要输入图形验证码才可发送手机验证码</p>
+                </dd>
+            </dl> -->
+
+            <div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="document.form1.submit()">确认提交</a></div>
+        </div>
+    </form>
+</div>

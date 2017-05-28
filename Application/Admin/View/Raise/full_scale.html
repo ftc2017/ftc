@@ -1,0 +1,332 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>众筹项目管理</h3>
+                <h5>满标待审列表</h5>
+            </div> 
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+			<li>满标待审列表</li>
+		</ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>满标待审列表</h3>
+                <h5>(共{$pager->totalRows}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline" id="search-form" method="post" action="{:U('index')}" onsubmit="return check_form();">
+                <div class="sDiv">
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="start_time" name="start_time" value="{$start_time}" placeholder="项目开始时间" class="qsbox">
+                        <input type="button" class="btn" value="项目开始时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="end_time" name="end_time" value="{$end_time}" placeholder="项目结束时间" class="qsbox">
+                        <input type="button" class="btn" value="项目结束时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="max_deadline" name="max_deadline" class="form-control">
+                            <option value="">最长持有期限</option>
+                            <volist name="zc_deadline" id="v">
+                            <option value="$v">{$v}天</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="models" name="models" class="form-control">
+                            <option value="">车型</option>
+                            <volist name="models" id="v">
+                            <option value="{$v.id}" <if condition="$_REQUEST['models'] heq 1">selected</if>>{$v.name}</option>
+                            </volist>
+                        </select>
+
+                    </div>
+                    <div class="sDiv2">
+                        <input size="30" value="{$Think.request.keyword}" name="keyword" placeholder="发起人/车商" class="qsbox" type="text">
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">
+                                <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);">
+                            </div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">ID</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">项目名</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">发起者</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">项目金额</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">开始时间</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">筹标期限</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">已筹金额</div>
+                        </th>
+                      <!--   <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">最大金额</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">限定待收金额</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">发布时间</div>
+                        </th> -->
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">最长持有期限</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">投资明细</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="tDiv">
+            <div class="tDiv2">
+            </div>
+            <div style="clear:both"></div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <volist name="list" id="v">
+                        <tr>
+                            <td align="left" class="">
+                                <div style="text-align: center; width: 50px;">
+                                    <if condition="$v['status'] eq 0"><input type="checkbox" name="selected[]" value="{$v['project_id']}"></if>
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 50px;">
+                                    {$v.project_id}
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                <!-- 	<if condition="$v['project_type'] eq 1">
+	                                <span style="color:red;font-size:17px;">已延期</span>
+	                            	</if> -->
+                                    {$v.project_name}
+                                </div>
+                                
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v.initiator}
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v.project_money}
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v.project_start_time|date="Y-m-d",###}
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v.project_time_limit}天
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v['project_id']|raise_money}元
+                                </div>
+                            </td>
+                            <!-- <td align="center" class="">
+                                <div style="text-align: center; width: 140px;">
+                                    {$v.zuida}元
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 140px;">
+                                    {$v.project_collecting_limitation}元
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v.project_time|date="Y-m-d",###}
+                                </div>
+                            </td> -->
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v.project_max_deadline}天
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 140px;">
+                                    <a href="{:U('investment_list',array('id'=>$v['project_id']))}" class="btn blue">查看</a>
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                            	<div style="text-align: center; width: 140px;">
+                                <a class="btn blue" onclick="passfunc({$v.project_id})" data-id="{$v.project_id}">通过</a>
+                            	</div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+</div>
+<script>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+    });
+
+
+    // 拒绝操作
+    function delfunc(id)
+    {
+        if(!confirm('确定要拒绝吗?'))
+            return false;
+        // var id = $(this).attr("data-id");
+        $.ajax({
+            url:"/index.php?m=Admin&c=raise&a=change_sta&id="+id+"&status="+9,
+            success: function(v){
+                if(v.status == 1)
+                    window.location.reload();
+                else
+                layer.msg(v.msg, {icon: 2,time: 1000}); //alert(v.msg);
+            }
+        });
+        return false;
+    }
+
+    function passfunc(id)
+    {
+        if(!confirm('确定要通过吗?'))
+            return false;
+         // var id = $(this).attr("data-id");
+        $.ajax({
+            url:"/index.php?m=Admin&c=raise&a=change_sta&id="+id+"&status="+3,
+            success: function(v){
+                if(v.status == 1)
+                    window.location.reload();
+                else
+                layer.msg(v.msg, {icon: 2,time: 1000}); //alert(v.msg);
+            }
+        });
+        return false;
+    }
+
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time !== '' && end_time !== ''){
+            $('#create_time').val(start_time+" - "+end_time);
+        }
+        if(start_time > end_time){
+            layer.alert('请选择的结束时间大于开始时间', {icon: 2});
+            return false;
+        }
+
+        return true;
+    }
+
+    //批量操作提交
+    function act_submit(wst) {
+        var a = [];
+        $('input[name*=selected]').each(function(i,o){
+            if($(o).is(':checked')){
+                a.push($(o).val());
+            }
+        })
+        if(a.length == 0){
+            layer.alert('请至少选择一项', {icon: 2});
+            return;
+        }
+        if(!confirm('确定要删除吗?'))
+            return false;
+        $.ajax({
+            type: "POST",
+            url: "/index.php?m=Admin&c=user&a=delete",//+tab,
+            data: {id:a,status:wst},
+            dataType: 'json',
+            success: function (data) {
+                if(data.status == 1){
+                    layer.alert('删除成功', {
+                        icon: 1,
+                        closeBtn: 0
+                    }, function(){
+                        window.location.reload();
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 2,time: 3000});
+                }
+
+            },
+            error:function(){
+                layer.alert('网络异常', {icon: 2,time: 3000});
+            }
+        });
+
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<div class="p500">
+        <div class="center cf">
+            <include file="_left"/>
+            <div class="p600-r">
+                <div class="p600-r1">
+                    <img src="__PUBLIC__/img/icon-82.png" alt=""> 修改登录密码
+                </div>
+                	<form action="__URL__/change_pass"   method="post" way="ajax">
+                <div class="p600-r2">
+                    <label for="pwd1">原密码</label>
+                    <input class="input verify" type="password" name="oldpassword" value="" placeholder="原密码" onkeyup="$(this).removeClass('error')">
+                    <label for="pwd2">新密码</label>
+                    <input class="input verify" type="password" name="password" value="" placeholder="新密码" onkeyup="$(this).removeClass('error')">
+                    <label for="pwd3">重新输入新密码</label>
+                    <input class="input verify" type="password" name="repassword" value="" placeholder="确认密码" onkeyup="$(this).removeClass('error')">
+                    <button type="submit" class="btn-lan register_2">确 认</button>
+                </div>
+                    </form>
+            </div>
+        </div>
+</div>

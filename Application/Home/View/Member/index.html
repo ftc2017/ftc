@@ -1,0 +1,92 @@
+{__NOLAYOUT__}
+<include file="_left"/>
+ <div class="c-div div_ZiljEp">
+  <div class="c-div div_svWPQ0">
+   <div class="c-div div_P4qYGX">
+    <div class="c-div div_lCFmVo">
+     <div class="row c-row row_qSGCj3"><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 c-column column_KLiogH">
+       <div class="c-div div_fgUuzy">
+        <label class="c-label label_e7THJN">
+         实名认证
+        </label>
+        <a class="c-textlink c-initHide textlink_mXU6su" href="#">
+         ／创建
+        </a>
+       </div>
+      </div><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 c-column column_6AOyeu">
+       <input class="c-input input_LBIyKt" name="input1" placeholder="搜索" type="text"/>
+      </div>
+     </div>
+    </div>
+    <div class="c-div div_lCFmVo">
+     <div class="row c-row row_5nREyb"><div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 c-column column_bPfYj4">
+       <div class="c-div div_bSlUbp">
+        <a class="btn c-button button_pQ6Pve1"  id="xiugai" type="button">
+         保存
+         <br/>
+        </a>
+       </div>
+      </div><div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 c-column column_ZEXxGT">
+      </div><div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 c-column column_P5HXFF">
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="c-div div_rIOc7m" data-c_e_id="div_c988b9f5">
+   <div class="c-div div_GnLriy">
+    <div class="container c-container container_vFoZ6I">
+     <div class="c-div div_LkwJ8b">
+      <div class="row c-row row_ZvStzK"><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 c-column column_ksfFHE">
+         <label class="c-label label_LekxAb">
+          真实姓名
+         </label>
+         <p class="c-paragraph paragraph_5bJMGt-1">
+          <input name="real_name" id="real_name" type="text" value="{$user.real_name}" style="border:none">
+          
+          <br/>
+         </p>
+         <label class="c-label label_LekxAb">
+          身份证号
+         </label>
+         <p class="c-paragraph paragraph_5bJMGt-1">
+          <input name="id_card" id="id_card" type="text" value="{$user.id_card}" style="border:none">
+          <br/>
+         </p>
+       </div><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 c-column column_HThAmB">
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+<script>
+  $('#xiugai').click(function() {
+    var regIdCard=/^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
+     var name =  $('#real_name').val();
+     var id_card =  $('#id_card').val();
+     if (!name || !id_card) {
+        layer.msg('姓名，身份证号必填', {icon: 2,time: 1000});
+        return false;
+     };
+      if(regIdCard.test(id_card)){
+         $.ajax({
+            url: "__URL__/index",
+            type: 'POST',
+            data: {real_name:name,id_card:id_card},
+            }).done(function(ret){
+              console.log(ret);
+                if (ret.status) {
+                   layer.msg('成功', {icon: 1,time: 2000},function() {
+                       location.href = '__URL__/setting';
+                   });
+                }else{
+                  layer.msg(ret.info, {icon: 2,time: 1000});
+                }
+            });
+        }else{
+            layer.msg('身份证号格式错误', {icon: 2,time: 1000});
+        }
+  });
+</script>

@@ -1,0 +1,375 @@
+<!-- <link href="__PUBLIC__/vendors/uniform.default.css" rel="stylesheet" media="screen">
+<link href="__PUBLIC__/vendors/chosen.min.css" rel="stylesheet" media="screen"> -->
+<div class="span2" id="sidebar">
+    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+    	<li class="">
+            <a href=""><i style="font-size:20px;"><strong>借款人管理</strong></i></a>
+        </li>
+        <if condition="$title eq 'index'">
+        	<li class="active">
+        	<else/>
+        	<li class="zc_l">
+        </if>
+            <a href="{:U('borrower/index')}"><i class="icon-chevron-right"></i> 借款人列表</a>
+        </li>
+    </ul>
+</div>
+<div class="span9" id="content">
+    <div class="row-fluid">
+        <!-- block -->
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">借款人列表</div>
+            </div>
+            <div class="block-content collapse in">
+                <div class="span12">
+                	<div class="table-toolbar">
+                      <div class="btn-group">
+                      	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">添加借款人<i class="icon-plus icon-white"></i></button>
+                         <!-- <a href="#"><button class="btn btn-success">添加借款人 <i class="icon-plus icon-white"></i></button></a> -->
+                      </div>
+                      <!-- <div class="btn-group pull-right">
+                         <button data-toggle="dropdown" class="btn dropdown-toggle">Tools <span class="caret"></span></button>
+                         <ul class="dropdown-menu">
+                            <li><a href="#">Print</a></li>
+                            <li><a href="#">Save as PDF</a></li>
+                            <li><a href="#">Export to Excel</a></li>
+                         </ul>
+                      </div> -->
+                   </div>
+                   <div style="margin-top:10px;">
+                      <!-- <div class="bar"></div> -->
+                    </div>
+                  		 <ul class="nav nav-tabs">
+						  <li role="presentation" class="active dj"><a href="#tab1">个人</a></li>
+						  <li role="presentation" class="dj"><a href="#tab2">车商</a></li>
+						</ul>
+						<form action="{:U('index')}" method="get">
+						<div class="btn-group">
+						  	<label  class="control-label">
+						  		<input  aria-controls="example" type="text" name="key" value="{:I('get.key')}" placeholder="请输入手机号/真实姓名/联系人" >
+								<input type="submit" class="btn btn-success" value="查询">
+						  	</label>
+						</div>
+						</form>
+						<!-- <div id="bar" class="progress progress-striped active">
+                                          <div class="bar"></div>
+                                        </div> -->
+						<table class="table table-striped" id="tab1">
+			              <thead>
+			                <tr>
+			                  <th>id</th>
+			                  <th>真实姓名</th>
+			                  <th>手机号</th>
+			                  <th>身份证号</th>
+			                  <th>身份证照片</th>
+			                  <th>联系地址</th>
+			                  <th>借款人类型</th>
+			                  <th>借款记录</th>
+			                </tr>
+			              </thead>
+			              <tbody>
+			              	<volist name="geren" id="v">
+			                <tr>
+			                  <td>{$v.borrower_id}</td>
+			                  <td>{$v.borrower_username}</td>
+			                  <td>{$v.borrower_phone}</td>
+			                  <td>{$v.borrower_card}</td>
+			                  <td>查看照片</td>
+			                  <td>{$v.borrower_address}</td>
+			                  <td>个人</td>
+			                  <td><a href="">查看</a></td>
+			                </tr>
+			            	</volist>
+			              </tbody>
+			            </table>
+
+			            <table class="table table-striped hidden" id="tab2">
+			              <thead>
+			                <tr>
+			                  <th>id</th>
+			                  <th>车商名称</th>
+			                  <th>联系人名称</th>
+			                  <th>手机号</th>
+			                  <th>营业执照编码</th>
+			                  <th>营业执照照片</th>
+			                  <th>联系地址</th>
+			                  <th>借款人类型</th>
+			                  <th>借款记录</th>
+			                </tr>
+			              </thead>
+			              <tbody>
+			              	<volist name="cheshang" id="v">
+			                <tr>
+			                  <td>{$v.borrower_id}</td>
+			                  <td>{$v.borrower_name}</td>
+			                  <td>{$v.borrower_username}</td>
+			                  <td>{$v.borrower_phone}</td>
+			                  <td>{$v.borrower_card}</td>
+			                  <td>查看照片</td>
+			                  <td>{$v.borrower_address}</td>
+			                  <td>车商</td>
+			                  <td><a href="">查看</a></td>
+			                </tr>
+			            	</volist>
+			              </tbody>
+			            </table>
+                </div>
+            </div>
+        </div>
+        <!-- /block -->
+    </div> 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">新建借款人</h4>
+      </div>
+      <div class="modal-body">
+      		<div class="control-group">
+						<label class="control-label">借款人类型</label>
+						<div class="controls">
+							<div class="radio">
+								<label>
+									<input type="radio" class="borrower_type" name="borrower_type" value="1" <eq name="res.borrower_type" value="$res.borrower_type">checked</eq> checked>个人
+								</label>
+							</div>
+						</div>
+						<div class="controls">
+							<div class="radio">
+								<label>
+									<input type="radio" class="borrower_type" name="borrower_type" value="2">车商
+								</label>
+							</div>
+						</div>
+					</div>
+        	<form class="form2" id="gr" role="form" action="{:U('Borrower/add')}" method="post">
+	        		<input class="input-xlarge focused" type="hidden" value="1" name="borrower_type">
+		          	<div class="control-group">
+		              <label class="control-label" for="borrower_username">真实姓名：</label>
+		              <div class="controls">
+		                <input class="input-xlarge focused" id="borrower_username" type="text" value="" name="borrower_username">
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label" for="borrower_phone">手机号：</label>
+		              <div class="controls">
+		                <input class="input-xlarge focused" id="borrower_phone" type="text" value="" name="borrower_phone">
+		              </div>
+		            </div>
+	          		<div class="form-group">
+						<label class="col-lg-4 control-label">所在地区</label>
+						<div class="col-lg-2">
+							<select class="form-control" name="province_id" id="province">
+								<option value="0">省</option>
+								<volist name="province" id="v">
+									<option value="{$v.id}" <eq name="res.province_id" value="$v.id">selected="selected"</eq>>{$v.name}</option>
+								</volist>
+							</select>
+						</div>
+						<div class="col-lg-2">
+							<select class="form-control" id="city" name="city_id">
+								<if condition="$dz['shi']">
+									<option value="">{$dz.shi}</option>	
+								<else/>
+								<option value="0">市</option>
+								</if>
+							</select>
+						</div>
+						<div class="col-lg-2">
+							<select class="form-control" id="district" name="borrower_district">
+								<if condition="$dz['qu']">
+									<option value="">{$dz.qu}</option>	
+								<else/>
+								<option value="0">区</option>
+								</if>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+		              <label class="control-label" for="borrower_card">身份证：</label>
+		              <div class="controls">
+		                <input class="input-xlarge focused" id="borrower_card" type="text" value="" name="borrower_card">
+		              </div>
+		            </div>
+		            <div class="control-group">
+                      <label class="control-label" for="fileInput">身份证正面</label>
+                      <div class="controls">
+                        <input class="input-file uniform_on" id="fileInput" type="file">
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="fileInput">身份证反面</label>
+                      <div class="controls">
+                        <input class="input-file uniform_on" id="fileInput" type="file">
+                      </div>
+                    </div>
+	        </form>
+
+	        <form class="hidden form1" id="cs" role="form" action="{:U('Borrower/add')}" method="post">
+	        		<!-- <div class="control-group">
+						<label class="control-label">借款人类型</label>
+						<div class="controls">
+							<div class="radio">
+								<label>
+									<input type="radio" class="borrower_type" name="borrower_type" value="1" <eq name="res.borrower_type" value="$res.borrower_type">checked</eq>>个人
+								</label>
+							</div>
+						</div>
+						<div class="controls">
+							<div class="radio">
+								<label>
+									<input type="radio" class="borrower_type" name="borrower_type" value="2" <eq name="res.borrower_type" value="$res.borrower_type">checked</eq>>车商
+								</label>
+							</div>
+						</div>
+					</div> -->
+					<input class="input-xlarge focused" type="hidden" value="2" name="borrower_type">
+		          	<div class="control-group">
+		              <label class="control-label" for="borrower_name">车商姓名：</label>
+		              <div class="controls">
+		                <input class="input-xlarge focused" id="borrower_name" type="text" value="" name="borrower_name">
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label" for="borrower_username">联系人姓名：</label>
+		              <div class="controls">
+		                <input class="input-xlarge focused" id="borrower_username" type="text" value="" name="borrower_username">
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label" for="borrower_phone">手机号：</label>
+		              <div class="controls">
+		                <input class="input-xlarge focused" id="borrower_phone" type="text" value="" name="borrower_phone">
+		              </div>
+		            </div>
+	          		<div class="form-group">
+						<label class="col-lg-4 control-label">所在地区</label>
+						<div class="col-lg-2">
+							<select class="form-control" name="province_id" id="province_cs">
+								<option value="0">省</option>
+								<volist name="province" id="v">
+									<option value="{$v.id}" <eq name="res.province_id" value="$v.id">selected="selected"</eq>>{$v.name}</option>
+								</volist>
+							</select>
+						</div>
+						<div class="col-lg-2">
+							<select class="form-control" id="city_cs" name="city_id">
+								<if condition="$dz['shi']">
+									<option value="">{$dz.shi}</option>	
+								<else/>
+								<option value="0">市</option>
+								</if>
+							</select>
+						</div>
+						<div class="col-lg-2">
+							<select class="form-control" id="district_cs" name="borrower_district">
+								<if condition="$dz['qu']">
+									<option value="">{$dz.qu}</option>	
+								<else/>
+								<option value="0">区</option>
+								</if>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+		              <label class="control-label" for="borrower_address">详细地址：</label>
+		              <div class="controls">
+		                <input class="input-xlarge focused" id="borrower_address" type="text" value="" name="borrower_address">
+		              </div>
+		            </div>
+					<div class="control-group">
+		              <label class="control-label" for="borrower_card">营业执照编码：</label>
+		              <div class="controls">
+		                <input class="input-xlarge focused" id="borrower_card" type="text" value="" name="borrower_card">
+		              </div>
+		            </div>
+		            <div class="control-group">
+                      <label class="control-label" for="fileInput">营业执照照片：</label>
+                      <div class="controls">
+                        <input class="input-file uniform_on" id="fileInput" type="file">
+                      </div>
+                    </div>
+	        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" id="baocun">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+	</div>     
+<script>
+	$(".dj").click(function(){
+		$(".dj").removeClass("active");
+        $(this).addClass("active");
+        if($("#tab1").hasClass("hidden")) {
+        	$("#tab2").addClass('hidden'); 
+        	$("#tab1").removeClass('hidden'); 
+        }else{
+        	$("#tab2").removeClass('hidden'); 
+        	$("#tab1").addClass('hidden');
+        }
+	});
+	$(".borrower_type").click(function(){
+		var type = $("input[type='radio']:checked").val();
+        if(type==1) {
+        	$("#cs").addClass('hidden'); 
+        	$("#gr").removeClass('hidden'); 
+        }else{
+        	$("#cs").removeClass('hidden'); 
+        	$("#gr").addClass('hidden');
+        }
+	});
+	
+</script>
+<script type="text/javascript">
+$(function() {
+	$("#province,#province_cs").change(function() {
+		var id = $("#province").val();
+		if (id==false) {
+			id = $("#province_cs").val();
+		};
+		if (id==0) {
+			return false;
+		};
+		$("#city,#city_cs").html('<option value="0">市</option>');
+		$.post("{:U('Borrower/getChildAjax')}", {
+			id: id
+		}, function(data) {
+			var str;
+			for (var i = 0; i < data.length; i++) {
+				str = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+				$("#city,#city_cs").append(str);
+			}
+		}, 'json');
+	})
+	$("#city,#city_cs").change(function() {
+		var id = $("#city").val();
+		if (id==false) {
+			id = $("#city_cs").val();
+		};
+		$("#district,#district_cs").html('<option value="0">区</option>');
+		$.post("{:U('Borrower/getChildAjax')}", {
+			id: id
+		}, function(data) {
+			var str;
+			for (var i = 0; i < data.length; i++) {
+				str = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+				$("#district,#district_cs").append(str);
+			}
+		}, 'json');
+	})
+})
+
+$("#baocun").click(function(){
+	if ($("#borrower_name").val()) {
+		$("#cs").submit();
+	}else{
+    	$("#gr").submit();
+	};
+  });
+</script>

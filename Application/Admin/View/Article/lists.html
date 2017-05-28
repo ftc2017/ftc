@@ -1,0 +1,169 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>文章管理</h3>
+                <h5>文章列表</h5>
+            </div> 
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>文章列表</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">
+                                <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);">
+                            </div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3">
+                            <div style="text-align: left; width: 120px;">ID</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: left; width: 120px;">文章标题</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: left; width: 120px;">所属栏目</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: left; width: 120px;">文章排序</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: left; width: 120px;">添加时间</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: left; width: 120px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div> 
+        <div class="tDiv">
+            <div class="tDiv2">
+                <div class="fbutton">
+                    <a href="{:U('edit')}">
+                        <div class="add" title="添加分类">
+                            <span><i class="fa fa-check"></i>添加文章</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="fbutton">
+                    <a onclick="act_submit(3)">
+                        <div class="add" title="批量删除">
+                            <span><i class="fa fa-close"></i>批量删除</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                        <volist name="Article_list" id="v">
+	                        <tr>
+	                            <td align="left">
+	                                <div><input type="checkbox" name="selected[]" value="{$v['article_id']}"></div>
+	                            </td>
+	
+	                            <td align="center">
+	                                <div style="text-align: center; width: 120px;">{$v.article_id}</div>
+	                            </td>
+	                            <td align="center">
+	                                <div style="text-align: center; width: 120px;">{$v.article_title}</div>
+	                            </td>
+	                            <td align="center">
+	                                <div style="text-align: center; width: 120px;">{$v.article_classify_name}</div>
+	                            </td>
+	                            <td align="center">
+	                                <div style="text-align: center; width: 120px;">{$v.article_sort}</div>
+	                            </td>
+	                            <td align="center">
+	                                <div style="text-align: center; width: 100px;">{$v.article_createtime|date='Y-m-d',###}</div>
+	                            </td>
+	
+	                            <td align="center" class="handle">
+	                                <div style="text-align: center; width: 170px; max-width:170px;">
+	                                    <a href="__URL__/edit/id/{$v.article_id}" class="btn blue"><i class="fa fa-pencil-square-o"></i>修改信息</a>
+	                                    <a class="btn red"  href="__URL__/del/id/{$v.article_id}"><i class="fa fa-trash-o"></i>删除</a>
+	                                </div>
+	                            </td>
+	                            <td align="" class="" style="width: 100%;">
+	                                <div>&nbsp;</div>
+	                            </td>
+	                        </tr>
+                        </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+</div>
+</body>
+</html>
+<script>
+	function act_submit(wst) {
+        var a = [];
+        $('input[name*=selected]').each(function(i,o){
+            if($(o).is(':checked')){
+                a.push($(o).val());
+            }
+        })
+        if(a.length == 0){
+            layer.alert('请至少选择一项', {icon: 2});
+            return;
+        }
+        if (wst == 3) {
+            if(!confirm('确定要删除吗?'))
+                return false;
+        };
+        console.log(a);
+        $.ajax({
+            type: "POST",
+            url: "/index.php?m=Admin&c=article&a=articleDel",//+tab,
+            data: {id:a,del:wst},
+            dataType: 'json',
+            success: function (data) {
+                if(data.status == 1){
+                    layer.alert('删除成功', {
+                        icon: 1,
+                        closeBtn: 0
+                    }, function(){
+                        window.location.reload();
+                    });
+                }else{
+                    layer.alert('删除失败', {icon: 2,time: 3000});
+                }
+
+            },
+            error:function(){
+                layer.alert('网络异常', {icon: 2,time: 3000});
+            }
+        });
+
+    }
+</script>

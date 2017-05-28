@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="__PUBLIC__/css/jquery.uploadify.css">
+<script src="__PUBLIC__/js/jquery.uploadify.js"></script>
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>合同参数</h3>
+                <h5>合同参数</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="admin_add" action="{:U('contract_parameters')}" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="company_name"><em>*</em>公司名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="company_name" value="{$info.company_name}" id="company_name" class="input-txt">
+                    <p class="notic">公司名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="company_address"><em>*</em>公司地址</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="company_address" value="{$info.company_address}" id="company_address" class="input-txt">
+                    <p class="notic">公司地址</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="company_phone"><em>*</em>公司电话</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="company_phone" value="{$info.company_phone}" id="company_phone" class="input-txt">
+                    <p class="notic">公司电话</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                        <dt class="tit">合同图片</dt>
+                        <dd class="opt">
+                          <div class="col-lg-8">
+                                <input id="pic" name="pic" type="file" >
+                            
+                            <div class="imglist" id="imglist">
+                                <notempty name="info.contract_pic">
+                                <img src="{$info.contract_pic|getPicPath}" height="100"><input type="hidden" name="contract_pic" value="{$info.contract_pic}">
+                                </notempty>
+                            </div>
+                            </div>
+                        </dd>
+                    </dl> 
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    // 判断输入框是否为空
+    function adsubmit(){
+        if($('input[name=contract_name]').val() == ''){
+            layer.msg('公司名称不能为空！', {icon: 2,time: 1000});   //alert('少年，用户名不能为空！');
+            return false;
+        }
+        if($('input[name=contract_address]').val() == ''){
+            layer.msg('公司地址不能为空！', {icon: 2,time: 1000});//alert('少年，密码不能为空！');
+            return false;
+        }
+        if($('input[name=contract_phone]').val() == ''){
+            layer.msg('公司电话不能为空！', {icon: 2,time: 1000});//alert('少年，密码不能为空！');
+            return false;
+        }
+        $('#admin_add').submit();
+    }
+
+     $(function() {
+        $('#pic').uploadify({
+            'formData':{'w':400,'h':100},
+            'buttonText':"上传图片",
+            'uploader' : "{:U('Common/uploadi')}",
+            'onUploadSuccess':function(file,data,response){
+                if(response == true){
+                    showimg(data);
+                }else{
+                    alert("上传失败");
+                }
+            },
+        });
+    });
+    //显示上传完成的图片
+    function showimg(data){
+        var pic = $.parseJSON(data);
+        if(pic.ret == 1){
+            $(".imglist").html('<a><img src="'+pic.thumb+'" style="width:130px; height:120px;"><input type="hidden" name="contract_pic" value="'+pic.pid+'"></a>');
+        }else{
+            alert(pic.msg);
+        }
+        return false;
+    }
+</script>

@@ -1,0 +1,65 @@
+<div class="p500">
+        <div class="center cf">
+            <include file="_left"/>
+            <div class="p500-r">
+                <div class="p500-r1">
+                    <div class="title2 ba0"><img class="icon-64" src="__PUBLIC__/img/icon-95.png" alt="">投资管理</div>
+                </div>
+                <div class="p500-r2 p520  cf">
+                    <div class="item p510b">
+                        <a href="__URL__/project_list/project_status/1" class="{$project_status==1 ? 'active' :''}">众筹中车辆</a>
+                        <a href="__URL__/project_list/project_status/2" class="{$project_status==2 ? 'active' :''}">待售车辆</a>
+                        <a href="__URL__/project_list/project_status/3" class="{$project_status==3 ? 'active' :''}">已售出车辆</a>
+                    </div>
+
+                </div>
+
+                <div class="p510-01">
+                <table class="p210table">
+                    <thead>
+                    <tr>
+                        <th>众筹日期</th>
+                        <th>期数</th>
+                        <th>投资金额</th>
+                        <th>众筹价格</th>
+                        <th>当前状态</th>
+                        <th>出售天数</th>
+                        <th>合同服务</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="list" id="v">
+                     <tr>
+                     	<td><span class="tc-99">{$v['project_start_time']|date="Y-m-d",###}</span></td>
+                     	<td>{$v['project_name']}</td>
+                     	<td>¥ {$v.raise_money}</td>
+                     	<td>¥ {$v.project_money}</td>
+                     	<?php $ss=array('2','6','9','10')?>
+                    	<?php $se=array('3','4','7')?>
+                     	<if condition="$v['project_status'] eq '5' or $v['project_status'] eq '11'">
+							<td><span class="tc-lan">已完成</span></td>
+						<elseif condition="in_array($v['project_status'],$ss)"/>
+							<td><span class="tc-lan">众筹中</span></td>
+							<!-- <p>发布时间：{$v['project_start_time']|date="Y-m-d",###}</p> -->
+						<elseif condition="in_array($v['project_status'],$se)"/>
+							<td><span class="tc-lan">待售中</span></td>
+							<!-- <p>出售时间：{$v['project_time']|date="Y-m-d",###}</p> -->
+						</if>
+                     	
+                     	<td>{$v.project_over_day}天</td>
+                     	<td><a href="{:U('Raise/detail',array('id'=>$v['project_id']))}" class="tc-lan2">查看</a></td></tr>
+					</volist>
+                    </tbody>
+                </table>
+                    <div class="pagenav cf tc-o">
+                        {$page}
+                    </div>
+                </div>
+                <!--<div class="p500-r4 cf">-->
+                    <!--<div class="item"><h5>投资平均年化收益率</h5><div class="f30">5.6%</div></div>-->
+                    <!--<div class="item"><h5>投资平均回款天数</h5><div class="f30">15天</div></div>-->
+                    <!--<div class="item"><h5>投资成功回款车辆数</h5><div class="f30">28辆</div></div>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>

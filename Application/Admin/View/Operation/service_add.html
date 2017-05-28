@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="__PUBLIC__/css/jquery.uploadify.css">
+<script src="__PUBLIC__/js/jquery.uploadify.js"></script>
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>客服管理</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="admin_add" action="{:U('service_add')}" method="post">
+        <input type="hidden" name="service_type" value="{$type == 2 ? '2' :'1'}" id="service_type" class="input-txt">
+    	<input type="hidden" name="service_id" value="{$info.service_id}" class="input-txt">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="service_title"><em>*</em>{$type == 2 ? '电话客服标题' :'QQ客服标题'}</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="service_title" value="{$info.service_title}" id="service_title" class="input-txt">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="service_number"><em>*</em>{$type == 2 ? '电话号码' :'QQ号'}</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="service_number" value="{$info.service_number}" id="service_number" class="input-txt">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="service_sort">显示顺序</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="service_sort" value="{$info.service_sort}" id="service_sort" class="input-txt">
+                </dd>
+            </dl>
+            <if condition="empty($type)">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="service_qq_type">类型</label>
+                </dt>
+                <dd class="opt">
+                    <input type="radio" name="service_qq_type" value="1" <if condition="$info['service_qq_type'] eq 1">checked</if>>普通QQ
+                    <input type="radio" name="service_qq_type" value="2" <if condition="$info['service_qq_type'] eq 2">checked</if>>营销QQ
+
+                </dd>
+            </dl>
+            </if>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="service_is_display">是否显示</label>
+                </dt>
+                <dd class="opt">
+                    <input type="radio" name="service_is_display" value="1" <if condition="$info['service_is_display'] eq 1">checked</if>>是
+                    <input type="radio" name="service_is_display" value="2" <if condition="$info['service_is_display'] eq 2">checked</if>>否
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    // 判断输入框是否为空
+    function adsubmit(){
+        if($('input[name=service_title]').val() == ''){
+            layer.msg('名称不能为空！', {icon: 2,time: 1000});   //alert('少年，用户名不能为空！');
+            return false;
+        }
+        if($('input[name=service_number]').val() == ''){
+            layer.msg('qq不能为空！', {icon: 2,time: 1000});//alert('少年，密码不能为空！');
+            return false;
+        }
+        $('#admin_add').submit();
+    }
+</script>

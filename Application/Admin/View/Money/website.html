@@ -1,0 +1,100 @@
+<style> 
+div.container
+{
+	width:90em;
+	/*height:80em;*/
+
+}
+div.box
+{
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; /* Firefox */
+	width:30%;
+	height:30em;
+	border:0.1em solid #dcdcdc;
+	float:left;
+	/*padding: 10px 10px 10px 10px;*/
+	margin-left: 20px;
+	margin-top: 20px;
+}
+.jianju{
+	padding: 10px 0 5px 15px;
+}
+</style>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>运营统计</h3>
+            </div> 
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+			<li>运营统计</li>
+		</ul>
+    </div>
+    <div class="flexigrid">
+        
+<div class="container">
+<div class="box">
+	<div style="background:#bbbbbb; color:#FFF;text-align:center;font-size:16px;height:2em;line-height: 30px;">会员统计</div>
+	<h3 style="font-size:14px;" class="jianju">会员总数:{$member}人</h3>
+
+	<h3 style="font-size:14px;" class="jianju">通过身份认证:{$rz_phone}人</h3>
+</div>
+<div class="box">
+	<div style="background:#bbbbbb; color:#FFF;text-align:center;font-size:16px;height:2em;line-height: 30px;">资金进出统计</div>
+	<h3 style="font-size:14px;" class="jianju">线上充值:￥{$xs_chongzhi}</h3>
+
+	<h3 style="font-size:14px;" class="jianju">线下充值:￥{$xx_chongzhi}</h3>
+
+	<h3 style="font-size:14px;" class="jianju">成功提现:￥{$withdrawal_success}</h3>
+
+	<h3 style="font-size:14px;" class="jianju">总计:￥{$xs_chongzhi+$xx_chongzhi+$withdrawal_success}</h3>
+</div>
+<div class="box">
+	<div style="background:#bbbbbb; color:#FFF;text-align:center;font-size:16px;height:2em;line-height: 30px;">投资者收益统计</div>
+	<h3 style="font-size:14px;" class="jianju">众筹总收益:￥{$shouyi}</h3>
+	<h3 style="font-size:14px;" class="jianju">邀请注册奖金总额:￥0.00</h3>
+	<h3 style="font-size:14px;" class="jianju">总计:￥{$shouyi}</h3>
+</div>
+<!-- </div>
+<div class="container"> -->
+<div class="box">
+		<div style="background:#bbbbbb; color:#FFF;text-align:center;font-size:16px;height:2em;line-height: 30px;">众筹统计</div>
+	<h3 style="font-size:14px;" class="jianju">项目总数:{$all_project}</h3>
+	<h3 style="font-size:14px;" class="jianju">成功项目数:{$chenggong}</h3>
+	<h3 style="font-size:14px;" class="jianju">溢价项目数:{$yijia}</h3>
+	<h3 style="font-size:14px;" class="jianju">在筹项目数:{$zaichou}</h3>
+	<h3 style="font-size:14px;" class="jianju">流标项目数:{$liubiao}</h3>
+	<h3 style="font-size:14px;" class="jianju">待回款项目数:{$daihuikuan}</h3>
+	<h3 style="font-size:14px;" class="jianju">出售中项目数:{$chushouzhong}</h3>
+	<h3 style="font-size:14px;" class="jianju">众筹资总金额:￥{$project_money}</h3>
+	<h3 style="font-size:14px;" class="jianju">还款金额:￥{$huan_money}</h3>
+</div>
+<div class="box">
+	<div style="background:#bbbbbb; color:#FFF;text-align:center;font-size:16px;height:2em;line-height: 30px;">平台收益</div>
+	<h3 style="font-size:14px;" class="jianju">正常收益:￥{$pingtai['normal_earnings']}</h3>
+	<h3 style="font-size:14px;" class="jianju">收入总计:￥{$pingtai['normal_earnings']}</h3>
+	<h3 style="font-size:14px;" class="jianju">溢价回购支出:￥{$pingtai['premium_repo']}</h3>
+	<h3 style="font-size:14px;" class="jianju">溢价逾期费用支出：￥{$pingtai['overdue_repo']}</h3>
+	<h3 style="font-size:14px;" class="jianju">支出总计:￥{$pingtai['normal_earnings']-$pingtai['premium_repo']-$pingtai['overdue_repo']}</h3>
+</div>
+<div class="box">
+	<div style="background:#bbbbbb; color:#FFF;text-align:center;font-size:16px;height:2em;line-height: 30px;">红包统计</div>
+	<h3 style="font-size:14px;" class="jianju">发放总额:￥{$packet}</h3>
+	<h3 style="font-size:14px;" class="jianju">总可用:￥{$ke_packet}</h3>
+	<h3 style="font-size:14px;" class="jianju">总使用:￥{$shi_packet}</h3>
+	<h3 style="font-size:14px;" class="jianju">总过期:￥{$guoqi_packet}</h3>
+</div>
+</div>

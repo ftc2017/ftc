@@ -1,0 +1,129 @@
+<div class="p500">
+        <div class="center cf">
+            <include file="Member/_left"/>
+            <div  class="p500-r">
+                <script>
+                    $(function () {
+                        $(".p570-01>a").click(function () {
+                            var i =$(this).index();
+                            $(this).addClass('active').siblings('a').removeClass('active');
+                            $($(".bz-tarbox>.p570-02")[i]).fadeIn().siblings().hide()
+                        });
+                    });
+                </script>
+                <div class="p500-r1">
+                   <div class="title2">提现</div>
+                </div>
+                <form action="__URL__/withdrawal"   method="post" way="ajax">
+                <div class="bz-tarbox">
+
+                    <div class="p570-02">
+                        <div>
+                            <span class="tc-o2">温馨提示：</span>每周一至周五上午9:00至下午16:00处理提现，工作日规定时间内提现当日到账，周六日及法定节假日无法办理提现申请。提现银行卡必须为平台实名注册用户本人名下的储蓄卡，发起提现申请后请及时联系专属客户经理或者在线客服。<a href="javascript:;" onclick="win('win-bank')" class="tc-o2" style="text-decoration: underline" >规则说明</a>。
+                        </div>
+                        <label>真&nbsp;实&nbsp;姓&nbsp;名：{$user.real_name}</label>
+                        <label>可提现金额：<span class="tc-o">¥ {$user.user_money}</span></label>
+                        <label for="">提现金额</label>
+                        <input type="hidden" id="user_money" value="{$user.user_money}">
+						<input type="number" class="input" name="withdrawal_money" id="withdrawal_money" value="" placeholder="提现金额">
+                        <label for="" class="p570-bl">绑定的银行卡</label>
+
+                        <div class="p570-zfbox cf">
+                            <input type="radio" class="radio-zf radio-zf2" checked name="" id="r5">
+                            <label for="r5">
+                                <span>{$user.bank_name}</span>
+                                <i>{$user.bank_card}</i>
+                                <i>储蓄卡</i>
+                                <i>开户行：{$user.bank_card_open}</i>
+                            </label>
+                        </div>
+                        <label class="mt-20" for="">支付密码</label>
+                        <!-- <input class="input" type="password" style="width: 300px;"> -->
+						<input class="input" type="password" name="paypwd" value="" placeholder="支付密码">
+                        <label for="verify">手机验证码</label>
+                        <input class="input yzm" type="text" name="verify" id="verify" value="" placeholder="短信密码"><a href="javascript:;" id="huoqu" class="btn-line mt-0">获取验证码</a>
+
+                        <!-- <a href="javascript:;" id="tixian" class="btn-lv">提现</a> -->
+                        <button type="submit" id="tixian" class="btn-lv">提现</button>
+                    </div>
+                </div>
+				</form>
+            </div>
+
+        </div>
+    </div>
+    <div class="win-bank">
+            <div class="win">
+                <!-- <img src="__PUBLIC__/img/icon-36.png" alt=""> -->
+                <h4>提现相关规则</h4>
+                <h4>当日16:00之前提交的提现申请则于当日进行办理，具体以实际到账时间为准；</h4>
+                <h4>当日16:00之后提交的提现申请则于次日上午9:00之后进行办理，具体以实际到账时间为准；</h4>
+                <h4>在周六日及法定节假日提交的提现申请则于周六日及法定节假日后第一个工作日内进行办理，具体以实际到账时间为准</h4>
+                <h4>线下充值提现平台均不收取任何手续费</h4>
+                <!-- <a href="" class="btn-o">去绑定</a> -->
+            </div>
+        </div>
+<script>
+        function win(o,w,h) {
+            w=w?w:'582px';
+            var html=$("."+o).html();
+            layer.open({
+                type: 1,
+                title:"",
+                area: [w,h],
+                closeBtn: 0, //不显示关闭按钮
+                anim: 1,
+                shadeClose: true, //开启遮罩关闭
+                content: html,
+            });
+        }
+
+    </script>
+<script>
+		$('#tixian').attr("disabled",true);
+		$('#huoqu').attr("disabled",true);
+		$('#withdrawal_money').blur(function() {
+			var user_money =parseInt($('#user_money').val());
+			var withdrawal_money =parseInt($('#withdrawal_money').val());
+			if (withdrawal_money > user_money) {
+				layer.msg('超出提现额度', {icon: 2,time: 1000});
+				return false;
+			}else{
+				$('#huoqu').attr("disabled",false);
+			}
+
+		});
+
+		$('#huoqu').click(function(){
+            var withdrawal_money =parseInt($('#withdrawal_money').val());
+	      $.ajax({
+	        url: "__URL__/checVerify",
+	        type: 'POST',
+	        data: {type:6,money:withdrawal_money},
+	        }).done(function(ret){
+	            if (ret.status) {
+	               layer.msg('发送成功', {icon: 1,time: 1000});
+	            }else{
+	            	layer.msg(ret.info, {icon: 2,time: 1000});
+	            }
+	        });
+	  	})
+
+		$('#verify').blur(function(){ 
+	    if ($('#verify').val() != '') { 
+	       $.ajax({
+	        url: "__URL__/checkCode",
+	        type: 'POST',
+	        data: {type:6,code:$('#verify').val()},
+	        }).done(function(ret){
+	            if (ret.status) {
+	              $('#tixian').attr("disabled",false); 
+	              return true;
+	                
+	            }else{
+	            	layer.msg(ret.info, {icon: 2,time: 1000});
+	            }
+	        });
+	    } 
+    })
+	</script>

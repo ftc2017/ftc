@@ -1,0 +1,122 @@
+{__NOLAYOUT__}
+<include file="_left"/>
+ <div class="c-div div_ZiljEp">
+  <div class="c-div div_svWPQ0">
+   <div class="c-div div_P4qYGX">
+    <div class="c-div div_lCFmVo">
+     <div class="row c-row row_qSGCj3"><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 c-column column_KLiogH">
+       <div class="c-div div_fgUuzy">
+        <label class="c-label label_e7THJN">
+         基础资料
+        </label>
+        <a class="c-textlink c-initHide textlink_mXU6su" href="#">
+         ／创建
+        </a>
+       </div>
+      </div><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 c-column column_6AOyeu">
+       <input class="c-input input_LBIyKt" name="input1" placeholder="搜索" type="text"/>
+      </div>
+     </div>
+    </div>
+    <div class="c-div div_lCFmVo">
+     <div class="row c-row row_5nREyb"><div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 c-column column_bPfYj4">
+       <div class="c-div div_bSlUbp">
+        <a class="btn c-button button_pQ6Pve1"  id="xiugai" type="button">
+         保存
+         <br/>
+        </a>
+        <a class="btn c-button c-initHide button_pQ6Pve1" data-c_act_id="M_0a1aa45e2c84240d|M_93eabd080a7da2aa" data-c_e_id="button_500c9413" type="button">
+         创建
+         <br/>
+        </a>
+        <a class="btn c-button c-initHide button_pQ6Pve" data-c_act_id="M_0296316f26a92469|M_6652ae22891aa736" data-c_e_id="buttonad313d3c" type="button">
+         保存
+         <br/>
+        </a>
+        <a class="btn c-button c-initHide button_pQ6Pve-1" data-c_act_id="act_4ab17119|act_222a6d9f" data-c_e_id="button59eca9b9" type="button">
+         放弃
+         <br/>
+        </a>
+       </div>
+      </div><div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 c-column column_ZEXxGT">
+      </div><div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 c-column column_P5HXFF">
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="c-div div_rIOc7m" data-c_e_id="div_c988b9f5">
+   <div class="c-div div_GnLriy">
+    <div class="container c-container container_vFoZ6I">
+     <div class="c-div div_LkwJ8b">
+      <div class="row c-row row_ZvStzK"><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 c-column column_ksfFHE">
+         <label class="c-label label_LekxAb">
+          FTC帐号
+         </label>
+         <p class="c-paragraph paragraph_5bJMGt-11">
+          {$user.mobile}
+         </p>
+         <label class="c-label label_LekxAb">
+          昵称
+         </label>
+         <p class="c-paragraph paragraph_5bJMGt-1">
+          <input name="user_name" id="user_name" type="text" value="{$user.user_name}" style="border:none">
+          
+          <br/>
+         </p>
+         <label class="c-label label_LekxAb">
+          实名认证
+         </label>
+         <p class="c-paragraph paragraph_5bJMGt-1">
+          {$user['real_name'] ? $user['real_name'] : '未认证'}
+          <br/>
+         </p>
+         <label class="c-label label_LekxAb">
+          手机号
+         </label>
+         <p class="c-paragraph paragraph_5bJMGt-1">
+          {$user.mobile}
+          <br/>
+         </p>
+         <label class="c-label label_i6fEtV">
+           注册时间
+          </label>
+          <p class="c-paragraph paragraph_adgzIS">
+           {$user['reg_time']|date="Y-m-d H:i",###}
+          </p>
+       </div><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 c-column column_HThAmB">
+        <!-- <div class="c-div div_QR9HGz">
+         <img class="c-image image_ZxTBsg" src="http://o3bnyc.creatby.com/diazo/images/image-placeholder.svg"/>
+        </div> -->
+        <!-- <div class="c-div div_o9SKMH">
+          <label class="c-label label_i6fEtV">
+           注册时间
+          </label>
+          <p class="c-paragraph paragraph_adgzIS">
+           {$user['reg_time']|date="Y-m-d H:i",###}
+          </p>
+        </div> -->
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+<script>
+  $('#xiugai').click(function() {
+     var name =  $('#user_name').val();
+     $.ajax({
+        url: "__URL__/jczl",
+        type: 'POST',
+        data: {user_name:name},
+        }).done(function(ret){
+          console.log(ret);
+            if (ret.status) {
+               layer.msg('成功', {icon: 1,time: 2000});
+            }else{
+              layer.msg(ret.info, {icon: 2,time: 1000});
+            }
+        });
+  });
+</script>

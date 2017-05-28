@@ -1,0 +1,72 @@
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>文章分类管理</h3>
+                <h5>文章分类编辑</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" action="{:U('Article/classify_editok')}" method="post" id='admin_add2'>
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>分类名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="article_classify_name" name="article_classify_name" value="{$ArticleClass_info.article_classify_name}" class="input-txt">
+                    <p class="notic">分类名称</p>
+                </dd>
+            </dl>
+             <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>所属分类</label>
+                </dt>
+                <dd class="opt">
+                    <select name="article_classify_pid" id="article_classify_pid">
+                            <option value="0">顶级分类</option>
+                            <volist name="ArticleClass_list" id="v">
+                            <option value="{$v.article_classify_id}" <eq name="v.article_classify_id" value="$ArticleClass_info.article_classify_pid">selected</eq>>{$v.article_classify_name}</option>
+                            </volist>
+                    </select>
+                    <p class="notic">所属分类</p>
+                </dd>    
+            </dl>
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>分类类型</label>
+                </dt>
+                <dd class="opt">
+                    <select name="article_classify_type">
+                       <option value="1" <eq name='ArticleClass_info.article_classify_type' value='1'>selected="selected"</eq>>单页</option>
+                       <option value="2" <eq name='ArticleClass_info.article_classify_type' value='1'>selected="selected"</eq>>列表页</option>                       
+                    </select>
+                    <p class="notic">分类类型</p>
+                </dd>
+            </dl> -->
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>分类排序</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="article_classify_sort" value="<empty name="ArticleClass_info.article_classify_sort">50<else/>{$ArticleClass_info.article_classify_sort}</empty>" class="input-txt">
+                    <p class="notic">分类排序</p>
+                </dd>
+            </dl>
+            <input type="hidden" name="id" value="{$ArticleClass_info.article_classify_id}">
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit1();" class="ncap-btn-big ncap-btn-green" style="color:#ffffff" id="">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script>
+    function adsubmit1(){
+    	 if($.trim($('#article_classify_name').val()).length == 0) {
+             layer.msg('带*号为必填项', {icon: 2,time: 1000});
+             return false;
+         } 
+        $('#admin_add2').submit();
+    }
+</script>

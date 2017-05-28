@@ -1,0 +1,94 @@
+<div class="p500">
+        <div class="center cf">
+            <include file="Member/_left"/>
+            <div  class="p500-r">
+                <script>
+                    $(function () {
+                        $(".p570-01>a").click(function () {
+                            var i =$(this).index();
+                            $(this).addClass('active').siblings('a').removeClass('active');
+                            $($(".bz-tarbox>.p570-02")[i]).fadeIn().siblings().hide()
+                        });
+                    });
+                </script>
+                <div class="p570-01 cf">
+                    <!-- <a href="javascript:;" class="lab ">线上充值</a> -->
+                    <a href="javascript:;" class="lab active">线下充值</a>
+                </div>
+                <div class="bz-tarbox">
+                    <div class="p570-02" style="display: none">
+                        <div>
+                            <span class="tc-o2">温馨提示：</span>最低充值金额50元。充值免手续费！充值资金可用于进行验证、投标、还款等。充值成功后资金会立刻划拨到您的帐户。
+                        </div>
+                        <label for="" class="mt-20">充值金额</label>
+                        <input class="input" type="text">元
+                        <label for="" class="p570-bl">充值方式</label>
+
+                        <div class="p570-zfbox cf">
+                            <input type="radio" class="radio-zf" name="" id="r1">
+                            <label for="r1">
+                                <img src="__PUBLIC__/img/icon-90.png" alt="">
+                            </label>
+                            <input type="radio" class="radio-zf" name="" id="r2">
+                            <label for="r2">
+                                <img src="__PUBLIC__/img/icon-91.png" alt=""><span>中国建设银行</span>
+                            </label>
+                            <input type="radio" class="radio-zf" name="" id="r3">
+                            <label for="r3">
+                                <img src="__PUBLIC__/img/icon-92.png" alt=""><span>中国招商银行</span>
+                            </label>
+                            <input type="radio" class="radio-zf" name="" id="r4">
+                            <label for="r4">
+                                <img src="__PUBLIC__/img/icon-93.png" alt=""><span>中国银行</span>
+                            </label>
+
+                        </div>
+                        <a href="" class="btn-lan">充值</a>
+                    </div>
+                    <div class="p570-02" style="display: block">
+                        <div>
+                            <span class="tc-o2">温馨提示：</span>（新人请详细阅读，切勿盲目充值，投资有风险，充值请谨慎）：
+ 
+1、充值时间为：周一至周六的9:00到17:00，充值成功后请与专属客户经理或者在线客服进行联系。
+                        </div>
+                    <form   method="post" way="ajax">
+                        <label>真实姓名：{$real_name}</label>
+                        <label for="">充值金额</label>
+                        <input type="number" name="recharge_money" value="" class="input verify" placeholder="金额">元
+                        <label for="" class="p570-bl">充值账号</label>
+                        <div class="p570-zfbox cf">
+                            <input type="radio" class="radio-zf radio-zf2" checked name="" id="r5">
+                            <label for="r5">
+                                <span>{$offbank['offbank_name']}</span>
+                                <i>账户名称：{$offbank['offbank_member']} </i>
+                                <i>账号：{$offbank['offbank_card']} </i>
+                                <i>开户行：{$offbank['offbank_address']}</i>
+                            </label>
+                        </div>
+                        <label for="">对账订单号</label>
+                        <input type="text" name="recharge_statement_no" value="" class="input verify" placeholder="对账单号">
+                        <button type="submit" class="btn-o register_2">充值</button>
+                    </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+<!-- 
+    <form  id="" method="post" way="ajax">
+       	<p>真实姓名：{$real_name}</p>
+        <input type="number" name="recharge_money" value="" class="verify" placeholder="金额">
+        <p>银行卡号：{$offbank['offbank_card']}</p>
+        <input type="hidden" name="offbank_id" value="{$offbank['offbank_id']}">
+        <input type="text" name="recharge_statement_no" value="" class="verify" placeholder="对账单号">
+		<button type="submit" class="btn-hong bg-lan1 b register_2">充值</button>
+    </form> -->
+    <script>
+    $('.register_2').click(function() {
+    	if(!confirm('确定要充值吗?'))
+            return false;
+    });
+    </script>

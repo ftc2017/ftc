@@ -1,0 +1,133 @@
+<div class="p000-01">
+      <form action="__URL__/regist"  id="regist" method="post" way="ajax">
+        <div class="loginbox">
+            <script>
+                $(function () {
+                    $(".inputbox>input").focus(function () {
+                        $(this).parents('.inputbox').addClass("focus");
+                    });
+                    $(".inputbox>input").blur(function () {
+                        $(this).parents('.inputbox').removeClass("focus");
+                    });
+                })
+                function eye(o) {
+                    if($(o).hasClass('active')){
+                        $(o).removeClass('active').siblings('input').attr("type","password");
+                    }else{
+                        $(o).addClass('active').siblings('input').attr("type","text");
+                    }
+                }
+            </script>
+            <div class="login-01">
+                <img src="__PUBLIC__/img/icon-03.png" alt="">
+                <h1>免费注册众创众筹账户</h1>
+                <div>已有账户？ <a href="{:U('Account/login')}">请登录</a></div>
+            </div>
+            <div class="loginrow">
+            <div class="inputbox">
+                <div class="input-icon"><img src="__PUBLIC__/img/icon-05.png" alt=""></div>
+                <input class="verify" name="user_name" type="text" placeholder="用户名" errorMsg="用户名" onkeyup="$(this).removeClass('error')" style="font-size:0.3rem;">
+            </div>
+            </div>
+            <div class="loginrow">
+            <div class="inputbox">
+                <div class="input-icon"><img src="__PUBLIC__/img/icon-06.png" alt=""></div>
+                <input class="verify phoneNumber" id="mobile" name="mobile" type="tel" placeholder="请输入手机号" onkeyup="$(this).removeClass('error')" errorMsg="手机号格式错误" style="font-size:0.3rem;">
+            </div>
+        </div>
+        <div class="loginrow">
+            <div class="inputbox">
+                <div class="input-icon"><img src="__PUBLIC__/img/icon-09.png" alt=""></div>
+                <input type="password" name="password" placeholder="请输入6-18位密码" errorMsg="密码" class="verify passWord" onkeyup="$(this).removeClass('error')">
+                <a href="javascript:;" onclick="eye(this)" class="eye-pwd"></a>
+            </div>
+        </div>
+        <div class="loginrow">
+            <div class="inputbox">
+                <div class="input-icon"><img src="__PUBLIC__/img/icon-09.png" alt=""></div>
+                <input type="password" name="repassword" placeholder="确认密码" errorMsg="密码" class="verify passWord" onkeyup="$(this).removeClass('error')">
+                <a href="javascript:;" onclick="eye(this)" class="eye-pwd"></a>
+            </div>
+        </div>
+        <if condition="$referees_code">
+        <div class="loginrow">
+            <div class="inputbox">
+                <div class="input-icon"><img src="__PUBLIC__/img/icon-10.png" alt=""></div>
+                  <input type="text" name="referees_code" value="{$referees_code}" readonly>
+            </div>
+        </div>
+        </if>
+        <div class="loginrow">
+            <div class="yz cf">
+                <div class="inputbox">
+                    <div class="input-icon"><img src="__PUBLIC__/img/icon-07.png" alt=""></div>
+                    <input type="text" class="p07-pwd mt10 verify" name="verify" errorMsg="验证码错误" onkeyup="$(this).removeClass('error')">
+                </div>
+                <img src="__URL__/getVerify" alt="" class="imgVerify">
+                <a href="javascript:;" class="p02-djs fr imgVerify"></a>
+            </div>
+        </div>
+        <input type="hidden" name="type" value="1">
+            <div class="loginrow">
+           <div class="yz cf">
+               <div class="inputbox">
+                   <div class="input-icon"><img src="__PUBLIC__/img/icon-08.png" alt=""></div>
+                   <input type="text" placeholder="请输入短信验证码" class="p07-pwd mt10 verify" name="code" id="code" errorMsg="验证码错误" onkeyup="$(this).removeClass('error')">
+               </div>
+               <a href="javascript:void(0);" class="btn-yz register_btn">获取验证码</a>
+           </div>
+        </div>
+        
+
+            <div>
+                <input type="checkbox" name="rem" value="1" id="rem" checked class="checkbox">
+                <label for="rem" class="w-auto fl">我已同意并阅读 </label><a href="{:U('Account/service_terms')}" target="_blank">《众创众筹服务条款协议》</a>
+            </div>
+            <button type="submit"  class="btn-lan mt-20 register_2">注册</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+    $('.imgVerify').click(function(){
+	    $('.imgVerify:first').prop('src','__URL__/getVerify');
+	  })
+     $('.register_btn').click(function(){
+
+      if (!verify($('input[name="mobile"]'))) {
+        return false;
+      }
+      $.ajax({
+        url: "__URL__/checVerify",
+        type: 'POST',
+        data: {mobile:$('#mobile').val(),type:1,verify:$('input[name="verify"]').val()},
+        }).done(function(ret){
+          console.log(ret);
+            if (ret.status) {
+               // $.toast('发送成功');
+               layer.msg('发送成功', {icon: 1,time: 1000});
+            }else{
+            	layer.msg(ret.info, {icon: 2,time: 1000});
+            }
+        });
+  	})
+
+	// $('.register_2').attr("disabled",true); 
+  	$('#code').blur(function(){ 
+	    if ($('#code').val() != '') { 
+	       $.ajax({
+	        url: "__URL__/checkCode",
+	        type: 'POST',
+	        data: {mobile:$('#mobile').val(),type:1,code:$('#code').val()},
+	        }).done(function(ret){
+	            if (ret.status) {
+	              // $('.register_2').attr("disabled",false); 
+	              return true;
+	                
+	            }else{
+	            	layer.msg(ret.info, {icon: 2,time: 1000});
+	            }
+	        });
+	    } 
+    }) 
+    </script>

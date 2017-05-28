@@ -1,0 +1,93 @@
+<div class="page">
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span></div>
+        <ul>
+            <li>请按规则详细填写运营参数</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" name="form1" action="{:U('Operation/index')}">
+        <input type="hidden" name="form_submit" value="ok"/>
+
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="zc_min">众筹最小投资额度</label>
+                </dt>
+                <dd class="opt">
+                    <input pattern="^\d{1,}$" id="zc_min" name="zc_min" value="{$info.zc_min}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">以100|1000|10000的形式填入，表示最小投资额为100元或10000元或10000元(zc_min)</p>
+                </dd>
+            </dl>
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label for="zc_max">单人单笔众筹最大投资额度</label>
+                </dt>
+                <dd class="opt">
+                    <input pattern="^\d{1,}$" id="zc_max" name="zc_max" value="{$info.zc_max}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">以5的形式填入，表示单人单笔最大投资额为项目金额的5%(zc_max)</p>
+                </dd>
+            </dl> -->
+            <dl class="row">
+                <dt class="tit">
+                    <label for="zc_collect">众筹集资期限</label>
+                </dt>
+                <dd class="opt">
+                    <input pattern="^\d{1,}$" name="zc_collect" value="{$info.zc_collect}" class="input-txt" type="text">
+                    <span class="err">5|7|10</span>
+                    <p class="notic">以5|7|10的形式填入，表示为5天或7天或10天(zc_collect)</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="zc_deadline">众筹最长持有期限</label>
+                </dt>
+                <dd class="opt">
+                    <input pattern="^\d{1,}$" name="zc_deadline" id="zc_deadline" value="{$info.zc_deadline}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">以1|3|5|10的形式填入，表示为1天或3天或5天或10天(zc_deadline)</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="zc_ge_max">单人单项目众筹总比例</label>
+                </dt>
+                <dd class="opt">
+                    <input pattern="^\d{1,}$" name="zc_ge_max" id="zc_ge_max" value="{$info.zc_ge_max}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">50代表个人总额度占众筹总额度50%(zc_ge_max)</p>
+                </dd>
+            </dl>
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label for="zc_overdue">溢价逾期费率</label>
+                </dt>
+                <dd class="opt">
+                    <input pattern="^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$" name="zc_overdue" id="zc_overdue" value="{$info.zc_overdue}" class="input-txt" type="text">%
+                    <span class="err">只能输入数字和小数</span>
+                    <p class="notic">10代表每人每天所得分配收益为本金的10%</p>
+                </dd>
+            </dl> -->
+           <!--  <dl class="row">
+                <dt class="tit">
+                    <label for="hot_keywords">首页热门搜索词</label>
+                </dt>
+                <dd class="opt">
+                    <input id="hot_keywords" name="hot_keywords" value="{$config.hot_keywords}" class="input-txt" type="text">
+                    <span class="err">例如:衣|手机|内衣</span>
+                    <p class="notic">商家中心右下侧显示，方便商家遇到问题时咨询</p>
+                </dd>
+            </dl> -->
+
+            <div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="document.form1.submit()">确认提交</a></div>
+        </div>
+    </form>
+</div>

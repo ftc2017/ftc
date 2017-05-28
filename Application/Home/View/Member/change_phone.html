@@ -1,0 +1,83 @@
+<div class="p500">
+        <div class="center cf">
+           <include file="_left" />
+            <div class="p600-r">
+                <div class="p600-r1">
+                    <img src="__PUBLIC__/img/icon-83.png" alt=""> 修改手机号码
+                </div>
+                    <form  id="change_phone" method="post" way="ajax">
+                <div class="p600-r2">
+  
+                    <label for="">原手机号码 <span class="tc-78">{$mobile|substr=0,3}****{$mobile|substr=7}</span></label>
+                    <label for="pwd1">新手机号</label>
+                    <input class="input verify phoneNumber" id="mobile" name="mobile" type="tel" placeholder="请输入手机号" errorMsg="手机号格式错误" style="font-size:0.3rem;">
+                    <label for="yzm">获取验证码</label>
+                    <input type="text" placeholder="请输入短信验证码" class="input" name="code" id="code" errorMsg="验证码错误"/>
+                    <a href="javascript:;"  class="btn-line register_btn" disClass="bg-w">获取验证码</a>
+                    <button type="submit" class="btn-lan register_2">确 认</button>
+                </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    $('#mobile').blur(function(){
+    	if (!verify($('input[name="mobile"]'))) {
+        return false;
+      }
+      $.ajax({
+        url: "__URL__/is_phone",
+        type: 'POST',
+        data: {mobile:$('#mobile').val()},
+        }).done(function(ret){
+          console.log(ret);
+            if (ret.status == 0) {
+               layer.msg('该手机号已注册', {icon: 2,time: 1000});
+            }else{
+            	$('.register_btn').attr("disabled",false); 
+            }
+        });
+    });
+     $('.register_btn').click(function(){
+
+      
+      $.ajax({
+        url: "__URL__/checVerify",
+        type: 'POST',
+        data: {mobile:$('#mobile').val(),type:3},
+        }).done(function(ret){
+          console.log(ret);
+            if (ret.status) {
+               // $.toast('发送成功');
+               layer.msg('发送成功', {icon: 1,time: 1000});
+            }else{
+            	layer.msg(ret.info, {icon: 2,time: 1000});
+            }
+        });
+  	})
+
+	$('.register_btn').attr("disabled",true); 
+	$('.register_2').attr("disabled",true); 
+  	$('#code').blur(function(){ 
+	    if ($('#code').val() != '') { 
+	       $.ajax({
+	        url: "__URL__/checkCode",
+	        type: 'POST',
+	        data: {mobile:$('#phone').val(),type:3,code:$('#code').val()},
+	        }).done(function(ret){
+	            if (ret.status) {
+	              $('.register_2').attr("disabled",false); 
+	              return true;
+	                
+	            }else{
+	            	layer.msg(ret.info, {icon: 2,time: 1000});
+	            }
+	        });
+	    } 
+    }) 
+
+    //  $('.register_2').click(function(){
+    // 	ajax_submit_form('change_phone','change_phone');
+    // });
+    </script>

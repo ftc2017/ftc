@@ -1,0 +1,353 @@
+<!-- <include file="public/layout" /> -->
+<link rel="stylesheet" href="__PUBLIC__/css/jquery.uploadify.css">
+<script src="__PUBLIC__/js/jquery.uploadify.js"></script>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>个人信息</h3>
+                <h5>个人信息修改</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a data-href="#tab_pay" class="<if condition="$type eq 'payment' or $type eq ''">current</if> tab" data-id=""><span>基本信息</span></a></li>
+                <li><a data-href="#tab_login" class="<if condition="$type eq 'login'">current</if> tab"><span>基本资料</span></a></li>
+                <li><a data-href="#tab_shipping" class="<if condition="$type eq 'shipping'">current</if> tab"><span>银行卡信息</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>修改个人信息</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <!--个人信息-->
+        <div class="bDiv" id="tab_pay" style="height: auto;<if condition="$type neq 'payment' AND $type neq ''">display: none;</if>">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+              	<form class="form-horizontal" id="xinxi-form" method="post" action="{:U('User/user_edit')}">
+                     <input id="user_id" name="user_id" value="{$res['user_id']}" class="input-txt" type="hidden">
+		        <div class="ncap-form-default">
+		            <dl class="row">
+		                <dt class="tit">是否冻结</dt>
+		                <dd class="opt">
+		                    <select id="is_lock" name="is_lock">
+		                        <option value="0" <eq name="res['is_lock']" value="0"> selected="selected"</eq>>否</option>
+                                <option value="1" <eq name="res['is_lock']" value="1"> selected="selected"</eq>>是</option>
+		                    </select>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">客服ID</dt>
+		                <dd class="opt">
+		                    <input id="service_id" name="service_id" value="{$res['service_id']}" class="input-txt" type="text">
+		                    <p class="notic">客服id</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">新密码</dt>
+		                <dd class="opt">
+		                    <input id="password" name="password" value="" class="input-txt" type="password">
+		                    <p class="notic">密码</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">确认新密码</dt>
+		                <dd class="opt">
+		                    <input id="repassword" name="repassword" value="" class="input-txt" type="password">
+		                    <p class="notic">密码</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">新支付密码</dt>
+		                <dd class="opt">
+		                    <input id="paypwd" name="paypwd" value="" class="input-txt" type="password">
+		                    <p class="notic">支付密码</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">确认新支付密码</dt>
+		                <dd class="opt">
+		                    <input id="repaypwd" name="repaypwd" value="" class="input-txt" type="password">
+		                    <p class="notic">支付密码</p>
+		                </dd>
+		            </dl>
+		            <div class="bot"><a href="JavaScript:void(0);" style="color:#ffffff;" onclick="$('#xinxi-form').submit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+		        </div>
+		    	</form>
+            </div>
+        </div>
+        <!--个人信息-->
+        <!--个人资料-->
+        <div class="bDiv" id="tab_login" style="height: auto;<if condition="$type neq 'login'">display: none;</if>">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <form class="form-horizontal" id="ziliao-form" method="post" action="{:U('User/user_edit')}">
+                    <input id="user_id" name="user_id" value="{$res['user_id']}" class="input-txt" type="hidden">
+
+		        <div class="ncap-form-default">
+		            <dl class="row">
+		                <dt class="tit">会员名</dt>
+		                <dd class="opt">
+		                    <input id="user_name" name="user_name" value="{$res['user_name']}" class="input-txt" type="text">
+		                    <p class="notic">会员名</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">真实姓名</dt>
+		                <dd class="opt">
+		                    <input id="real_name" name="real_name" value="{$res['real_name']}" class="input-txt" type="text">
+		                    <p class="notic">真实姓名</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">身份证号</dt>
+		                <dd class="opt">
+		                    <input id="id_card" name="id_card" value="{$res['id_card']}" class="input-txt" type="text">
+		                    <p class="notic">身份证号</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">会员邮箱</dt>
+		                <dd class="opt">
+		                    <input id="email" name="email" value="{$res['email']}" class="input-txt" type="text">
+		                    <p class="notic">会员邮箱</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">地址</dt>
+		                <dd class="opt">
+		                    <input id="user_address" name="user_address" value="{$res['user_address']}" class="input-txt" type="text">
+		                    <p class="notic">地址</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">年龄</dt>
+		                <dd class="opt">
+		                    <input id="birthday" name="birthday" value="{$res.birthday|date="Y-m-d",###}" class="input-txt qsbox" type="text">
+		                    <p class="notic">年龄</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">职业</dt>
+		                <dd class="opt">
+		                    <input id="professional" name="professional" value="{$res['professional']}" class="input-txt" type="text">
+		                    <p class="notic">职业</p>
+		                </dd>
+		            </dl>
+                    <dl class="row">
+                        <dt class="tit">身份证正面</dt>
+                        <dd class="opt">
+                          <div class="col-lg-8">
+                                <input id="pic" name="pic" type="file" >
+                            
+                            <div class="imglist" id="imglist">
+                                <notempty name="res.card_pic_positive">
+                                <img src="{$res.card_pic_positive|getPicPath}" height="100"><input type="hidden" name="card_pic_positive" value="{$res.card_pic_positive}">
+                                </notempty>
+                            </div>
+                            </div>
+                        </dd>
+                    </dl>
+
+                    <dl class="row">
+                        <dt class="tit">身份证反面</dt>
+                        <dd class="opt">
+                          <div class="col-lg-8">
+                                <input id="pic1" name="pic1" type="file" >
+                            
+                            <div class="imglist1" id="imglist1">
+                                <notempty name="res.card_pic_reverse">
+                                <img src="{$res.card_pic_reverse|getPicPath}" height="100"><input type="hidden" name="card_pic_reverse" value="{$res.card_pic_reverse}">
+                                </notempty>
+                            </div>
+                            </div>
+                        </dd>
+                    </dl> 
+		            <div class="bot"><a href="JavaScript:void(0);" style="color:#ffffff;" class="ncap-btn-big ncap-btn-green" id="submitBtn2">确认提交</a></div>
+		        </div>
+		    </form>
+            </div>
+        </div>
+        <!--个人资料-->
+        <!--银行卡-->
+        <div class="bDiv" id="tab_shipping" style="height: auto;<if condition="$type neq 'shipping'">display: none;</if>">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <form class="form-horizontal" id="bank-form" method="post" action="{:U('User/user_edit')}">
+                    <input id="user_id" name="user_id" value="{$res['user_id']}" class="input-txt" type="hidden">
+		        <div class="ncap-form-default">
+		            <dl class="row">
+		                <dt class="tit">银行卡号</dt>
+		                <dd class="opt">
+		                    <input id="bank_card" name="bank_card" value="{$res['bank_card']}" class="input-txt" type="text">
+		                    <p class="notic">银行卡号</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">银行名称</dt>
+		                <select id="bank_name" name="bank_name">
+                                <volist name="bank" id='v'>
+                                <option value="{$v['id']}" <eq name="v['id']" value="$res['bank_name']"> selected="selected"</eq>>{$v['name']}</option>
+                                </volist>
+                            </select>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">开户银行所在省份</dt>
+		                <dd class="opt">
+		                    <input id="bank_card_p" name="bank_card_p" value="{$res['bank_card_p']}" class="input-txt" type="text">
+		                    <p class="notic">开户银行所在省份如：广东省</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">开户银行所在市</dt>
+		                <dd class="opt">
+		                    <input id="bank_card_city" name="bank_card_city" value="{$res['bank_card_city']}" class="input-txt" type="text">
+		                    <p class="notic">开户银行所在市如：深圳市</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">开户支行名称</dt>
+		                <dd class="opt">
+		                    <input id="bank_card_open" name="bank_card_open" value="{$res['bank_card_open']}" class="input-txt" type="text">
+		                    <p class="notic">开户支行名称如：开发区支行</p>
+		                </dd>
+		            </dl>
+		            <div class="bot"><a href="JavaScript:void(0);" style="color:#ffffff;"  class="ncap-btn-big ncap-btn-green" id="submitBtn3">确认提交</a></div>
+		        </div>
+		    </form>
+            </div>
+        </div>
+        <!--银行卡-->
+     </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('#birthday').layDate();
+        var type = "{$type}";
+        if(type !== ''){
+            $('#tab_plugin_'+type).trigger('click');
+        }
+    });
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        //插件切换列表
+        $('.tab-base').find('.tab').click(function(){
+            $('.tab-base').find('.tab').each(function(){
+                $(this).removeClass('current');
+            });
+            $(this).addClass('current');
+            $('.bDiv').hide();
+            var id = $(this).attr('data-href');
+            $(id).show();
+            if(id=='#tab_shipping'){
+                $('.tDiv').show();
+            }else{
+                $('.tDiv').hide();
+            }
+        });
+    });
+
+    $('#submitBtn2').click(function(){
+        var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+        if(!reg.test($('#email').val())){
+            layer.msg('邮箱格式不对', {icon: 2,time: 1000});
+            return false;
+        }
+        if($.trim($('#id_card').val()).length == 0) {
+            layer.msg('请填写身份证号', {icon: 2,time: 1000});
+            return false;
+        } 
+        if(isCardNo($.trim($('#id_card').val())) == false) {
+            layer.msg('请填写正确的身份证号', {icon: 2,time: 1000});
+            return false;
+        }else{
+            $('#ziliao-form').submit();
+        }
+    });
+
+    $('#submitBtn3').click(function(){
+        var account = $("#bank_card").val(); 
+        if($('input[name=bank_card_p]').val() == ''){
+            layer.msg('开户省不能为空', {icon: 2,time: 1000});
+            return false;
+        }
+        if($('input[name=bank_card_city]').val() == ''){
+            layer.msg('开户市不能为空', {icon: 2,time: 1000});
+            return false;
+        }
+        if($('input[name=bank_card_open]').val() == ''){
+            layer.msg('开户地不能为空', {icon: 2,time: 1000});
+            return false;
+        }
+        var reg = /^\d{19}$/g; // 以19位数字开头，以19位数字结尾 
+        if( !reg.test(account) ) 
+        { 
+            layer.msg('格式错误，应该是19位数字！', {icon: 2,time: 1000});//alert('少年，密码不能为空！');
+            return false; 
+        }else{
+            $('#bank-form').submit();
+        }
+    });
+
+    $(function() {
+        $('#pic').uploadify({
+            'formData':{'w':400,'h':100},
+            'buttonText':"上传图片",
+            'uploader' : "{:U('Common/uploadi')}",
+            'onUploadSuccess':function(file,data,response){
+                if(response == true){
+                    showimg(data);
+                }else{
+                    alert("上传失败");
+                }
+            },
+        });
+    });
+    //显示上传完成的图片
+    function showimg(data){
+        var pic = $.parseJSON(data);
+        if(pic.ret == 1){
+            $(".imglist").html('<a><img src="'+pic.thumb+'" style="width:130px; height:120px;"><input type="hidden" name="card_pic_positive" value="'+pic.pid+'"></a>');
+        }else{
+            alert(pic.msg);
+        }
+        return false;
+    }
+
+    $(function() {
+        $('#pic1').uploadify({
+            'formData':{'w':400,'h':100},
+            'buttonText':"上传图片",
+            'uploader' : "{:U('Common/uploadi')}",
+            'onUploadSuccess':function(file,data,response){
+                if(response == true){
+                    showimg(data);
+                }else{
+                    alert("上传失败");
+                }
+            },
+        });
+    });
+    //显示上传完成的图片
+    function showimg(data){
+        var pic = $.parseJSON(data);
+        if(pic.ret == 1){
+            $(".imglist1").html('<a><img src="'+pic.thumb+'" style="width:130px; height:120px;"><input type="hidden" name="card_pic_reverse" value="'+pic.pid+'"></a>');
+        }else{
+            alert(pic.msg);
+        }
+        return false;
+    }
+</script>
+</body>
+</html>

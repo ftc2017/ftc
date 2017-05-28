@@ -1,0 +1,63 @@
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>文章分类管理</h3>
+                <h5>文章分类编辑</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="admin_add2" action="{:U('Packet/editok')}" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>红包名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="packet_name" name="packet_name" value="{$packet_info.packet_name}" class="input-txt">
+                    <p class="notic">红包名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>红包金额</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="packet_facevalue" name="packet_facevalue" value="{$packet_info.packet_facevalue}" class="input-txt">
+                    <p class="notic">元</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>使用期限</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="packet_timelimit" name="packet_timelimit" value="{$packet_info.packet_timelimit}" class="input-txt">
+                    <p class="notic">（天）*从领取之日往后推迟指定的天数</p>
+                </dd>
+            </dl>
+            <input type="hidden" name="id" value="{$packet_info.packet_id}">
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script>
+function adsubmit(){
+    if($.trim($('#packet_name').val()).length == 0) {
+         layer.msg('带*号为必填项', {icon: 2,time: 1000});
+         return false;
+     } 
+     if($.trim($('#packet_facevalue').val()).length == 0) {
+         layer.msg('带*号为必填项', {icon: 2,time: 1000});
+         return false;
+     }
+     if($.trim($('#packet_timelimit').val()).length == 0) {
+         layer.msg('带*号为必填项', {icon: 2,time: 1000});
+         return false;
+     }
+     $('#admin_add2').submit();
+ }
+</script>

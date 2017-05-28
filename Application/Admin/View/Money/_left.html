@@ -1,0 +1,57 @@
+<div class="span3" id="sidebar">
+    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+    	<li class="">
+            <a href=""><i style="font-size:20px;"><strong>会员账户</strong></i></a>
+        </li>
+        <if condition="$title eq 'user_account'">
+        	<li class="active">
+        	<else/>
+        	<li class="zc_l">
+        </if>
+            <a href="{:U('Money/user_account')}"><i class="icon-chevron-right"></i> 会员账户</a>
+        </li>
+    </ul>    
+    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+        <li class="zc_l">
+            <a href=""><i style="font-size:20px;"><strong>充值提现</strong></i></a>
+        </li>
+         <if condition="$title eq 'recharge'">
+        	<li class="active">
+        	<else/>
+        	<li class="zc_l">
+        </if>
+            <a href="{:U('Money/recharge')}"><i class="icon-chevron-right"></i> 充值记录</a>
+        </li>
+         <if condition="$title eq 'withdrawal'">
+        	<li class="active">
+        	<else/>
+        	<li class="zc_l">
+        </if>
+            <a href="{:U('Money/withdrawal')}"><i class="icon-chevron-right"></i> 提现记录</a>
+        </li>
+    </ul>
+    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+         <li class="zc_l">
+            <a href=""><i style="font-size:20px;"><strong>会员资金变动记录</strong></i></a>
+        </li>
+         <if condition="$title eq 'money_log'">
+        	<li class="active">
+        	<else/>
+        	<li class="zc_l">
+        </if>
+            <a href="{:U('Money/money_log')}"><i class="icon-chevron-right"></i> 资金记录</a>
+        </li>
+    </ul>
+    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+        <li class="zc_l">
+            <a href=""><i style="font-size:20px;"><strong>网站运营</strong></i></a>
+        </li>
+         <if condition="$title eq 'website'">
+        	<li class="active">
+        	<else/>
+        	<li class="zc_l">
+        </if>
+            <a href="{:U('Money/website')}"><i class="icon-chevron-right"></i> 网站运营统计</a>
+        </li>
+    </ul>
+</div>

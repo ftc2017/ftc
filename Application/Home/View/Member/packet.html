@@ -1,0 +1,89 @@
+<script type="text/javascript" src="__PUBLIC__/js/layer/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/layer/extend/layer.ext.js"></script>
+<div class="p500">
+        <div class="center cf">
+            <include file="_left"/>            
+            <div class="p500-r">
+                <div class="p500-r1">
+                    <div class="title2 ba0"><img class="icon-64" src="__PUBLIC__/img/icon-64.png" alt="">红包管理</div>
+                </div>
+                <div class="p500-r2 p510 cf">
+                    <input type="hidden" id="qian" value="{$packet_money}">
+                    <div class="item">我的红包：<span>¥ {$packet_money ? $packet_money :'0'}</span></div>
+                    <div class="item">
+                        <a href="javascript:;"  onclick="panduan()" class="btn-o">转到余额</a>
+                    </div>
+                </div>
+
+                <div class="p500-r1 ba0">
+                    <div class="title2">红包发放记录</div>
+                </div>
+                <div class="p510-01">
+                <table class="p210table">
+                    <thead>
+                    <tr>
+                        <th>金额</th>
+                        <th>红包名称</th>
+                        <th>发放时间</th>
+                       
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="list" id="v">
+                     <tr><td>¥ {$v.packet_facevalue}</td><td>{$v.packet_name}</td><td> {$v['p_u_gaintime']|date="Y-m-d",###}</td></tr>
+					</volist>
+                    </tbody>
+                </table>
+                    <div class="pagenav cf tc-o">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="win-zhuanyue">
+            <div class="win">
+                <img src="__PUBLIC__/img/icon-65.png" alt="">
+                <h4>红包可用余额：<span class="tc-o">¥ {$packet_money ? $packet_money :'0'}</span></h4>
+                <!-- <span class="tishi"><img src="__PUBLIC__/img/icon-04.png" alt=""> 单笔金额须不大于红包可用余额</span> -->
+                <a href="javascript:;" onclick="into_user()" id="zhuan" class="btn-o">确认</a>
+            </div>
+    </div>
+     <script>
+        function win(o,w,h) {
+            w=w?w:'582px';
+            var html=$("."+o).html();
+            layer.open({
+                type: 1,
+                title:"",
+                area: [w,h],
+                closeBtn: 0, //不显示关闭按钮
+                anim: 1,
+                shadeClose: true, //开启遮罩关闭
+                content: html,
+            });
+        }
+
+    </script>
+<script>
+function panduan(){
+    if ($('#qian').val()) {
+        win('win-zhuanyue','582px','410px')
+    }else{
+        layer.msg('红包余额为零', {icon: 2,time: 1000});
+    }
+}
+function into_user(){
+			$.post('into_user',{type:1},function(obj){
+		        if(obj.status == 0){
+		            layer.msg(obj.msg, {icon: 2,time: 1000});
+                    location.reload();
+		            return false;
+		        }
+		        if(obj.status == 1){
+		            location.reload();
+		        }
+		    })
+        
+}
+</script>

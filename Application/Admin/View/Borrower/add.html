@@ -1,0 +1,464 @@
+<include file="public/layout" />
+<link rel="stylesheet" href="__PUBLIC__/css/jquery.uploadify.css">
+<script src="__PUBLIC__/js/jquery.uploadify.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>添加借款人</h3>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a data-href="#tab_pay" class="<if condition="$type eq 'payment' or $type eq ''">current</if> tab" data-id=""><span>个人</span></a></li>
+                <li><a data-href="#tab_login" class="<if condition="$type eq 'login'">current</if> tab"><span>车商</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>添加车商，个人</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <!--个人-->
+        <div class="bDiv" id="tab_pay" style="height: auto;<if condition="$type neq 'payment' AND $type neq ''">display: none;</if>">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <form class="form-horizontal" id="admin_add1" action="{:U('Borrower/add')}" method="post">
+		        <input  type="hidden" value="1" name="borrower_type">
+		        <div class="ncap-form-default">
+		            <dl class="row">
+		                <dt class="tit">
+		                    <label for="borrower_username"><em>*</em>真实姓名：</label>
+		                </dt>
+		                <dd class="opt">
+		                    <input type="text" name="borrower_username" value="{$info.borrower_username}" id="borrower_username" class="input-txt verify">
+		                    <p class="notic">真实姓名</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">
+		                    <label for="borrower_phone"><em>*</em>手机号：</label>
+		                </dt>
+		                <dd class="opt">
+		                    <input type="text" name="borrower_phone" value="{$info.borrower_phone}" id="borrower_phone" class="input-txt">
+		                    <p class="notic">手机号：</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                    <dt class="tit">
+		                        <label><em>*</em>省</label>
+		                    </dt>
+		                    <dd class="opt">
+		                        <select name="province_id" id="province">
+		                        	<option value="0">请选择</option>
+		                            <volist name="province" id="v">
+		                            	<option value="{$v.id}" <eq name="res.province_id" value="$v.id">selected="selected"</eq>>{$v.name}</option>
+		                            </volist>
+		                        </select>
+		                        <span class="err"></span>
+		                        <p class="notic">省</p>
+		                    </dd>
+		                </dl>
+		                <dl class="row">
+		                    <dt class="tit">
+		                        <label><em>*</em>市</label>
+		                    </dt>
+		                    <dd class="opt">
+		                    	<select  id="city" name="city_id">
+		                        <if condition="$dz['shi']">
+									<option value="">{$dz.shi}</option>	
+								<else/>
+								<option value="0">市</option>
+								</if>
+								</select>
+		                        <span class="err"></span>
+		                        <p class="notic">市</p>
+		                    </dd>
+		                </dl>
+		                <dl class="row">
+		                    <dt class="tit">
+		                        <label><em>*</em>区</label>
+		                    </dt>
+		                    <dd class="opt">
+		                        <select id="district" name="borrower_district">
+									<if condition="$dz['qu']">
+										<option value="">{$dz.qu}</option>	
+									<else/>
+									<option value="0">区</option>
+									</if>
+								</select>
+		                        <span class="err"></span>
+		                        <p class="notic">区</p>
+		                    </dd>
+		                </dl>
+		            <dl class="row">
+		                <dt class="tit">
+		                    <label for="borrower_address"><em>*</em>详细地址：</label>
+		                </dt>
+		                <dd class="opt">
+		                    <input type="text" name="borrower_address" value="{$info.borrower_address}" id="borrower_address" class="input-txt verify">
+		                    <p class="notic">详细地址</p>
+		                </dd>
+		            </dl>
+		             <dl class="row">
+		                <dt class="tit">
+		                    <label for="borrower_card"><em>*</em>身份证号：</label>
+		                </dt>
+		                <dd class="opt">
+		                    <input type="text" name="borrower_card" value="{$info.borrower_card}" id="borrower_card" class="input-txt">
+		                    <p class="notic">身份证号</p>
+		                </dd>
+		            </dl>
+		             <dl class="row">
+                        <dt class="tit">身份证正面</dt>
+                        <dd class="opt">
+                          <div class="col-lg-8">
+                                <input id="pic" name="pic" type="file" >  
+                            <div class="card_imglist" id="card_imglist">
+                                <notempty name="res.borrower_card_pic">
+                                <img src="{$res.borrower_card_pic|getPicPath}" height="100"><input type="hidden" name="borrower_card_pic" value="{$res.borrower_card_pic}">
+                                </notempty>
+                            </div>
+                            </div>
+                        </dd>
+                    </dl>
+
+                    <dl class="row">
+                        <dt class="tit">身份证反面</dt>
+                        <dd class="opt">
+                          <div class="col-lg-8">
+                                <input id="pic1" name="pic1" type="file" >  
+                            <div class="imglist1" id="imglist1">
+                                <notempty name="res.borrower_card_pic2">
+                                <img src="{$res.borrower_card_pic1|getPicPath}" height="100"><input type="hidden" name="borrower_card_pic2" value="{$res.borrower_card_pic2}">
+                                </notempty>
+                            </div>
+                            </div>
+                        </dd>
+                    </dl>   
+		        </div>
+		    </form>
+		            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" style="color:#ffffff" id="">确认提交</a></div>
+            </div>
+        </div>
+        <!--个人-->
+        <!--车商-->
+        <div class="bDiv" id="tab_login" style="height: auto;<if condition="$type neq 'login'">display: none;</if>">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+	        <form class="form-horizontal" id="admin_add2" action="{:U('Borrower/add')}" method="post">
+		        <input  type="hidden" value="2" name="borrower_type">
+		        <div class="ncap-form-default">
+		            <dl class="row">
+		                <dt class="tit">
+		                    <label for="borrower_name"><em>*</em>车商姓名：</label>
+		                </dt>
+		                <dd class="opt">
+		                    <input type="text" name="borrower_name" value="{$info.borrower_name}" id="borrower_name" class="input-txt cs_verify">
+		                    <p class="notic">车商姓名</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">
+		                    <label for="borrower_username"><em>*</em>联系人姓名：</label>
+		                </dt>
+		                <dd class="opt">
+		                    <input type="text" name="borrower_username" value="{$info.borrower_username}" id="borrower_username" class="input-txt cs_verify">
+		                    <p class="notic">联系人姓名：</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                <dt class="tit">
+		                    <label for="borrower_phone"><em>*</em>手机号：</label>
+		                </dt>
+		                <dd class="opt">
+		                    <input type="text" name="borrower_phone" value="{$info.borrower_phone}" id="cs_borrower_phone" class="input-txt cs_verify">
+		                    <p class="notic">手机号：</p>
+		                </dd>
+		            </dl>
+		            <dl class="row">
+		                    <dt class="tit">
+		                        <label><em>*</em>省</label>
+		                    </dt>
+		                    <dd class="opt">
+		                        <select name="province_id" id="province_cs">
+		                        	<option value="0">请选择</option>
+		                            <volist name="province" id="v">
+		                            	<option value="{$v.id}" <eq name="res.province_id" value="$v.id">selected="selected"</eq>>{$v.name}</option>
+		                            </volist>
+		                        </select>
+		                        <span class="err"></span>
+		                        <p class="notic">省</p>
+		                    </dd>
+		                </dl>
+		                <dl class="row">
+		                    <dt class="tit">
+		                        <label><em>*</em>市</label>
+		                    </dt>
+		                    <dd class="opt">
+		                    	<select  id="city_cs" name="city_id">
+		                        <if condition="$dz['shi']">
+									<option value="">{$dz.shi}</option>	
+								<else/>
+								<option value="0">市</option>
+								</if>
+								</select>
+		                        <span class="err"></span>
+		                        <p class="notic">市</p>
+		                    </dd>
+		                </dl>
+		                <dl class="row">
+		                    <dt class="tit">
+		                        <label><em>*</em>区</label>
+		                    </dt>
+		                    <dd class="opt">
+		                        <select id="district_cs" name="borrower_district">
+									<if condition="$dz['qu']">
+										<option value="">{$dz.qu}</option>	
+									<else/>
+									<option value="0">区</option>
+									</if>
+								</select>
+		                        <span class="err"></span>
+		                        <p class="notic">区</p>
+		                    </dd>
+		                </dl>
+		            <dl class="row">
+		                <dt class="tit">
+		                    <label for="borrower_address"><em>*</em>详细地址：</label>
+		                </dt>
+		                <dd class="opt">
+		                    <input type="text" name="borrower_address" value="{$info.borrower_address}" id="borrower_address" class="input-txt cs_verify">
+		                    <p class="notic">详细地址</p>
+		                </dd>
+		            </dl>
+		             <dl class="row">
+		                <dt class="tit">
+		                    <label for="borrower_card"><em>*</em>营业执照编码：</label>
+		                </dt>
+		                <dd class="opt">
+		                    <input type="text" name="borrower_card" value="{$info.borrower_card}" id="borrower_card" class="input-txt cs_verify">
+		                    <p class="notic">营业执照编码</p>
+		                </dd>
+		            </dl>
+		             <dl class="row">
+                        <dt class="tit">营业执照照片</dt>
+                        <dd class="opt">
+                          <div class="col-lg-8">
+                                <input id="pic2" name="pic2" type="file" >
+                            
+                            <div class="imglist2" id="imglist2">
+                                <notempty name="res.borrower_card_pic">
+                                <img src="{$res.borrower_card_pic|getPicPath}" height="100"><input type="hidden" name="borrower_card_pic" value="{$res.borrower_card_pic}">
+                                </notempty>
+                            </div>
+                            </div>
+                        </dd>
+                    </dl>
+		                
+		        </div>
+		    </form>
+            </div>
+		            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit1();" class="ncap-btn-big ncap-btn-green" style="color:#ffffff" id="">确认提交</a></div>
+        </div>
+        <!--车商-->
+     </div>
+</div>
+<script>
+    $(document).ready(function(){
+        var type = "{$type}";
+        if(type !== ''){
+            $('#tab_plugin_'+type).trigger('click');
+        }
+    });
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        //插件切换列表
+        $('.tab-base').find('.tab').click(function(){
+            $('.tab-base').find('.tab').each(function(){
+                $(this).removeClass('current');
+            });
+            $(this).addClass('current');
+            $('.bDiv').hide();
+            var id = $(this).attr('data-href');
+            $(id).show();
+            if(id=='#tab_shipping'){
+                $('.tDiv').show();
+            }else{
+                $('.tDiv').hide();
+            }
+        });
+
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+    });
+
+    $(function() {
+	$("#province,#province_cs").change(function() {
+		var id = $("#province").val();
+		if (id==false) {
+			id = $("#province_cs").val();
+		};
+		if (id==0) {
+			return false;
+		};
+		$("#city,#city_cs").html('<option value="0">市</option>');
+		$.post("{:U('Borrower/getChildAjax')}", {
+			id: id
+		}, function(data) {
+			var str;
+			for (var i = 0; i < data.length; i++) {
+				str = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+				$("#city,#city_cs").append(str);
+			}
+		}, 'json');
+	})
+	$("#city,#city_cs").change(function() {
+		var id = $("#city").val();
+		if (id==false) {
+			id = $("#city_cs").val();
+		};
+		$("#district,#district_cs").html('<option value="0">区</option>');
+		$.post("{:U('Borrower/getChildAjax')}", {
+			id: id
+		}, function(data) {
+			var str;
+			for (var i = 0; i < data.length; i++) {
+				str = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+				$("#district,#district_cs").append(str);
+			}
+		}, 'json');
+	})
+})
+
+    $(function() {
+        $('#pic').uploadify({
+            'formData':{'w':400,'h':200},
+            'buttonText':"上传图片",
+            'uploader' : "{:U('Common/uploadi')}",
+            'onUploadSuccess':function(file,data,response){
+                if(response == true){
+                    showimg(data);
+                }else{
+                    alert("上传失败");
+                }
+            },
+        });
+    });
+    //显示上传完成的图片
+    function showimg(data){
+        var pic = $.parseJSON(data);
+        if(pic.ret == 1){
+            $(".card_imglist").html('<a><img src="'+pic.thumb+'" style="width:130px; height:120px;"><input type="hidden" name="borrower_card_pic" value="'+pic.pid+'"></a>');
+        }else{
+            alert(pic.msg);
+        }
+        return false;
+    }
+
+    $(function() {
+        $('#pic1').uploadify({
+            'formData':{'w':400,'h':100},
+            'buttonText':"上传图片",
+            'uploader' : "{:U('Common/uploadi')}",
+            'onUploadSuccess':function(file,data,response){
+                if(response == true){
+                    showimg2(data);
+                }else{
+                    alert("上传失败");
+                }
+            },
+        });
+    });
+    //显示上传完成的图片
+    function showimg2(data){
+        var pic = $.parseJSON(data);
+        if(pic.ret == 1){
+            $(".imglist1").html('<a><img src="'+pic.thumb+'" style="width:130px; height:120px;"><input type="hidden" name="borrower_card_pic2" value="'+pic.pid+'"></a>');
+        }else{
+            alert(pic.msg);
+        }
+        return false;
+    }
+
+     $(function() {
+        $('#pic2').uploadify({
+            'formData':{'w':400,'h':100},
+            'buttonText':"上传图片",
+            'uploader' : "{:U('Common/uploadi')}",
+            'onUploadSuccess':function(file,data,response){
+                if(response == true){
+                    showimg3(data);
+                }else{
+                    alert("上传失败");
+                }
+            },
+        });
+    });
+    //显示上传完成的图片
+    function showimg3(data){
+        var pic = $.parseJSON(data);
+        if(pic.ret == 1){
+            $(".imglist2").html('<a><img src="'+pic.thumb+'" style="width:130px; height:120px;"><input type="hidden" name="borrower_card_pic" value="'+pic.pid+'"></a>');
+        }else{
+            alert(pic.msg);
+        }
+        return false;
+    }
+
+
+     // 判断输入框是否为空
+    function adsubmit(){
+    	if($.trim($('.verify').val()).length == 0) {
+            layer.msg('带*号为必填项', {icon: 2,time: 1000});
+            return false;
+        } 
+        if($.trim($('#borrower_card').val()).length == 0) {
+            layer.msg('请填写身份证号', {icon: 2,time: 1000});
+            return false;
+        } 
+        if(isCardNo($.trim($('#borrower_card').val())) == false) {
+            layer.msg('请填写正确的身份证号', {icon: 2,time: 1000});
+            return false;
+        }
+        if($.trim($('#borrower_phone').val()).length == 0) {
+            layer.msg('请填写手机号', {icon: 2,time: 1000});
+            return false;
+        } 
+        if(isPhoneNo($.trim($('#borrower_phone').val())) == false) {
+            layer.msg('请填写正确的手机号', {icon: 2,time: 1000});
+            return false;
+        }
+        $('#admin_add1').submit();
+    }
+    function adsubmit1(){
+    	if($.trim($('.cs_verify').val()).length == 0) {
+            layer.msg('带*号为必填项', {icon: 2,time: 1000});
+            return false;
+        } 
+        if($.trim($('#cs_borrower_phone').val()).length == 0) {
+            layer.msg('请填写手机号', {icon: 2,time: 1000});
+            return false;
+        } 
+        if(isPhoneNo($.trim($('#cs_borrower_phone').val())) == false) {
+            layer.msg('请填写正确的手机号', {icon: 2,time: 1000});
+            return false;
+        }
+        $('#admin_add2').submit();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+	<div class="fixed-bar">
+		<div class="item-title">
+			<div class="subject">
+				<h3>运营管理</h3>
+				<h5>业务参数</h5>
+			</div>
+		</div>
+	</div>
+	<div class="flexigrid">
+		<div class="mDiv">
+			<div class="ftitle">
+				<h3>业务列表</h3>
+			</div>
+		</div>
+		<div class="hDiv">
+			<div class="hDivBox">
+				<table cellspacing="0" cellpadding="0">
+					<thead>
+					<tr>
+						<th align="left" abbr="article_title" axis="col3" class="">
+							<div style="text-align: left; width: 150px;" class="">ID</div>
+						</th>
+						<th align="left" abbr="ac_id" axis="col4" class="">
+							<div style="text-align: left; width: 150px;" class="">银行名称</div>
+						</th>
+						<th align="center" abbr="article_show" axis="col5" class="">
+							<div style="text-align: left; width: 150px;" class="">收款人</div>
+						</th>
+						<th align="center" abbr="article_show" axis="col5" class="">
+							<div style="text-align: left; width: 150px;" class="">收款账号</div>
+						</th>
+						<th align="center" abbr="article_show" axis="col5" class="">
+							<div style="text-align: left; width: 150px;" class="">开户地址</div>
+						</th>
+						<th align="center" axis="col1" class="handle">
+							<div style="text-align: center; width: 150px;">操作</div>
+						</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div class="tDiv">
+			<div class="tDiv2">
+				<div class="fbutton">
+					<!-- <a href="{:U('operation/bizparam_add')}"> -->
+						<div class="add" id="add" title="添加">
+							<span><i class="fa fa-plus"></i>添加</span>
+						</div>
+					<!-- </a> -->
+					</div>
+					<div class="fbutton">
+                    <a onclick="act_submit(3)">
+                        <div class="add" title="批量删除">
+                            <span><i class="fa fa-close"></i>批量删除</span>
+                        </div>
+                    </a>
+                </div>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+		<div class="bDiv" style="height: auto;">
+			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+					<form id="admin_add" action="{:U('offline_add')}" method="post">
+				<table>
+						<tbody >
+							<foreach name="list" item="vo" key="k" >
+								<tr id="biz">
+								<td align="center" >
+                                <div style="width: 2rem"><input type="checkbox" name="selected[]" value="{$vo['offbank_id']}"></div>
+                            </td>
+									<td align="left" class="">
+										<div style="text-align: left; width: 150px;">{$vo.offbank_id}</div>
+									</td>
+									<td align="left" class="">
+										<div style="text-align: left; width: 150px;">{$vo.offbank_name}</div>
+									</td>
+									<td align="left" class="">
+										<div style="text-align: left; width: 150px;">{$vo.offbank_member}</div>
+									</td>
+									<td align="left" class="">
+										<div style="text-align: left; width: 150px;">{$vo.offbank_card}</div>
+									</td>
+									<td align="left" class="">
+										<div style="text-align: left; width: 150px;">{$vo.offbank_address}</div>
+									</td>
+									<td align="center" class="handle">
+										<div style="text-align: center; width: 170px; max-width:170px;">
+												<a class="btn red"  href="javascript:void(0)" data-url="{:U('operation/offline_add')}" data-id="{$vo.offbank_id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
+										</div>
+									</td>
+									<td align="" class="" style="width: 100%;">
+										<div>&nbsp;</div>
+									</td>
+								</tr>
+							</foreach>
+						</tbody>
+				</table>
+					</form>
+
+			</div>
+			<div class="iDiv" style="display: none;"></div>
+		</div>
+			<div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">提交修改</a></div>
+		<!--分页位置-->
+		{$page} </div>
+</div>
+<script>
+	$(document).ready(function(){
+		// 表格行点击选中切换
+		$('#flexigrid > table>tbody >tr').click(function(){
+			$(this).toggleClass('trSelected');
+		});
+
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+
+	});
+
+	function adsubmit(){
+        $('#admin_add').submit();
+    }
+
+	function delfun(obj) {
+		// 删除按钮
+		layer.confirm('确认删除？', {
+			btn: ['确定', '取消'] //按钮
+		}, function () {
+			$.ajax({
+				type: 'post',
+				url: $(obj).attr('data-url'),
+				data : {act:'del',id:$(obj).attr('data-id')},
+				dataType: 'json',
+				success: function (data) {
+					if (data.status == 1) {
+						$(obj).parent().parent().parent().remove();
+						layer.closeAll();
+					} else {
+						layer.alert('删除失败', {icon: 2});  //alert('删除失败');
+					}
+				}
+			})
+		}, function () {
+		});
+	}
+
+	function del(obj) {
+		// 删除按钮
+		layer.confirm('确认删除？', {
+			btn: ['确定', '取消'] //按钮
+		}, function () {
+			// console.log($(this));
+			$(obj).parent().parent().remove();
+			layer.closeAll();
+		}, function () {
+		});
+	}
+	// function del(this) {
+	// 	layer.confirm('确认删除？', {
+	// 		btn: ['确定', '取消'] //按钮
+	// 	}, function () {
+	// 		// $(this).parent().remove();
+	// 	}, function () {
+	// 	});
+		
+	// }
+
+	$("#add").click(function() {
+		var html ='';
+		html ='<tr>';
+		html +='<td align="left" class=""><div style="text-align: left; width: 150px;"><input type="text" name="offbank_name[]" value="" class="input-txt"></div></td>';
+		html +='<td align="left" class=""><div style="text-align: left; width: 150px;"><input type="text" name="offbank_member[]" value=""  class="input-txt"></div></td>';
+		html +='<td align="left" class=""><div style="text-align: left; width: 150px;"><input type="text" name="offbank_card[]" value=""  class="input-txt"></div></td>';
+		html +='<td align="left" class=""><div style="text-align: left; width: 150px;"><input type="text" name="offbank_address[]" value=""  class="input-txt"></div></td>';
+		html +='<td><a class="btn red" style="text-align: left; width: 100px; margin-top:10px;"  href="javascript:void(0)"  onClick="del(this)"><i class="fa fa-trash-o"></i>删除</a></td>';
+		html +='</tr>';
+		$("tbody").append(html);
+	});
+</script>
+<script>
+	function act_submit(wst) {
+        var a = [];
+        $('input[name*=selected]').each(function(i,o){
+            if($(o).is(':checked')){
+                a.push($(o).val());
+            }
+        })
+        if(a.length == 0){
+            layer.alert('请至少选择一项', {icon: 2});
+            return;
+        }
+        if (wst == 3) {
+            if(!confirm('确定要删除吗?'))
+                return false;
+        };
+        console.log(a);
+        $.ajax({
+            type: "POST",
+            url: "/index.php?m=Admin&c=operation&a=bankDel",//+tab,
+            data: {id:a,del:wst},
+            dataType: 'json',
+            success: function (data) {
+                if(data.status == 1){
+                    layer.alert('删除成功', {
+                        icon: 1,
+                        closeBtn: 0
+                    }, function(){
+                        window.location.reload();
+                    });
+                }else{
+                    layer.alert('删除失败', {icon: 2,time: 3000});
+                }
+
+            },
+            error:function(){
+                layer.alert('网络异常', {icon: 2,time: 3000});
+            }
+        });
+
+    }
+</script>
+</body>
+</html>

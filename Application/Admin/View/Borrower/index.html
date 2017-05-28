@@ -1,0 +1,327 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>借款人管理</h3>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a data-href="#tab_pay" class="<if condition="$type eq 'payment' or $type eq ''">current</if> tab" data-id=""><span>个人</span></a></li>
+                <li><a data-href="#tab_login" class="<if condition="$type eq 'login'">current</if> tab"><span>车商</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>车商，个人</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="Div">
+            <form class="navbar-form form-inline" id="search-form" method="get" action="{:U('index')}">
+                <div class="sDiv">
+                    <div class="sDiv2">
+                        <input size="50" value="{$Think.request.keyword}" name="keyword" placeholder="请输入手机号/真实姓名/联系人" style="width:200px;" class="qsbox" type="text">
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                </div>
+            </form>
+            <div class="Div2">
+                <div class="fbutton"> <a href="/index.php/Admin/Borrower/add">
+                    <div class="add" title="添加借款人">
+                        <span><i class="fa fa-plus"></i>添加借款人</span>
+                    </div>
+                </a> </div>
+                <div class="fbutton">
+                    <a onclick="act_submit(3)">
+                        <div class="add" title="批量删除">
+                            <span><i class="fa fa-close"></i>批量删除</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div style="clear:both"></div>
+        </div>
+         
+        <!--支付插件-->
+        <div class="bDiv" id="tab_pay" style="height: auto;<if condition="$type neq 'payment' AND $type neq ''">display: none;</if>">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <thead>
+                    <tr> 
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">
+                                <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);">
+                            </div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: left; width: 120px;" class="">id</div>
+                        </th>
+                        <th align="left" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: left; width: 120px;" class="">真实姓名</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">手机号</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">身份证</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">身份证照片</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">联系地址</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">借款人类型</div>
+                        </th>
+                        <!-- <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">借款记录</div>
+                        </th> -->
+                        <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 1250px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="geren" id="p">
+                        <tr>
+                            <td align="center" >
+                                <div style="width: 2rem"><input type="checkbox" name="selected[]" value="{$p['borrower_id']}"></div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$p.borrower_id}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$p.borrower_username}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 150px;">{$p.borrower_phone}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$p.borrower_card}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: center; width: 120px;">
+                                    <a href="{$p.borrower_card_pic|getPicPath}" class="pic-thumb-tip" onMouseOver="layer.tips('<img style=\'width:400px;\' src={$p.borrower_card_pic|getPicPath}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"><i class="fa fa-picture-o"></i></a>
+                                    <a href="{$p.borrower_card_pic2|getPicPath}" class="pic-thumb-tip" onMouseOver="layer.tips('<img style=\'width:400px;\' src={$p.borrower_card_pic2|getPicPath}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"><i class="fa fa-picture-o"></i></a>
+                                </div>
+                            </td>
+                           
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 140px;">{$p.borrower_address}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">个人</div>
+                            </td>
+                            <!--  <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">查看</div>
+                            </td> -->
+                            <td align="center" class="handle">
+                                <div style="text-align: center; width: 250px; max-width:250px;">
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--支付插件-->
+        <!--登录插件-->
+        <div class="bDiv" id="tab_login" style="height: auto;<if condition="$type neq 'login'">display: none;</if>">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <thead>
+                    <tr>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">
+                                <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);">
+                            </div>
+                        </th>
+                       <!--  <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th> -->
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: left; width: 120px;" class="">id</div>
+                        </th>
+                        <th align="left" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: left; width: 120px;" class="">车商名称</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">联系人名称</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">手机号</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">营业执照编码</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">营业执照照片</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">联系地址</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">借款人类型</div>
+                        </th>
+                        <!-- <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">借款记录</div>
+                        </th> -->
+                        <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 1250px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="cheshang" id="l">
+                        <tr>
+                            <td align="center" >
+                                <div style="width: 2rem"><input type="checkbox" name="selected[]" value="{$l['borrower_id']}"></div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$l.borrower_id}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$l.borrower_name}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$l.borrower_username}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$l.borrower_phone}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$l.borrower_card}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: center; width: 120px;">
+                                    <a href="{$l.borrower_card_pic|getPicPath}" class="pic-thumb-tip" onMouseOver="layer.tips('<img style=\'width:400px;\' src={$l.borrower_card_pic|getPicPath}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"><i class="fa fa-picture-o"></i></a>
+                                </div>
+                            </td>
+                           
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$l.borrower_address}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">车商</div>
+                            </td>
+                             <!-- <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">查看</div>
+                            </td> -->
+                            <td align="center" class="handle">
+                                <div style="text-align: center; width: 170px; max-width:170px;">
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--登录插件-->
+     </div>
+</div>
+<script>
+	function act_submit(wst) {
+        var a = [];
+        $('input[name*=selected]').each(function(i,o){
+            if($(o).is(':checked')){
+                a.push($(o).val());
+            }
+        })
+        if(a.length == 0){
+            layer.alert('请至少选择一项', {icon: 2});
+            return;
+        }
+        if (wst == 3) {
+            if(!confirm('确定要删除吗?'))
+                return false;
+        };
+        console.log(a);
+        $.ajax({
+            type: "POST",
+            url: "/index.php?m=Admin&c=borrower&a=borrowerDel",//+tab,
+            data: {id:a,del:wst},
+            dataType: 'json',
+            success: function (data) {
+                if(data.status == 1){
+                    layer.alert('删除成功', {
+                        icon: 1,
+                        closeBtn: 0
+                    }, function(){
+                        window.location.reload();
+                    });
+                }else{
+                    layer.alert('删除失败', {icon: 2,time: 3000});
+                }
+
+            },
+            error:function(){
+                layer.alert('网络异常', {icon: 2,time: 3000});
+            }
+        });
+
+    }
+</script>
+<script>
+
+    $(document).ready(function(){
+        var type = "{$type}";
+        if(type !== ''){
+            $('#tab_plugin_'+type).trigger('click');
+        }
+    });
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        //插件切换列表
+        $('.tab-base').find('.tab').click(function(){
+            $('.tab-base').find('.tab').each(function(){
+                $(this).removeClass('current');
+            });
+            $(this).addClass('current');
+            $('.bDiv').hide();
+            var id = $(this).attr('data-href');
+            $(id).show();
+            if(id=='#tab_shipping'){
+                $('.tDiv').show();
+            }else{
+                $('.tDiv').hide();
+            }
+        });
+
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+    });
+</script>
+</body>
+</html>

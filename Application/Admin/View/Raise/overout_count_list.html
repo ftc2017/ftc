@@ -1,0 +1,129 @@
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>逾期回购收益列表</h3>
+                <h5>逾期回购收益列表</h5>
+            </div> 
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+			<li>逾期回购收益列表</li>
+		</ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>逾期回购收益列表</h3>
+            </div>
+        </div>
+         <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">
+                                <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);">
+                            </div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">ID</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">投资人</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">众筹金额</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">逾期收益金额</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">众筹时间</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <volist name="list" id="v">
+                        <tr>
+                            <td align="left" class="">
+                                <div style="text-align: center; width: 50px;">
+                                    <if condition="$v['status'] eq 0"><input type="checkbox" name="selected[]" value="{$v['project_id']}"></if>
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 50px;">
+                                    {$v.investment_id}
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v.user_name}
+                                </div>
+                                
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v.raise_money}
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v.investment_earnings}
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    {$v.investment_time|date="Y-m-d",###}
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <input name="id" id="id" type="hidden" value="{$project_id}">
+            <input name="num" id="num" type="hidden" value="{$lending}">
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认发放收益</a></div>
+        <!--分页位置-->
+        {$page} </div>
+</div>
+<script>
+  function adsubmit(){
+       var num =$('#num').val();
+       var id =$('#id').val();
+        $.ajax({
+            url:"/index.php?m=Admin&c=raise&a=overout_user_earnings&id="+id+"&num="+num,
+            success: function(v){
+                if(v.status == 1)
+                	location.href = v.url;
+                    // window.location.reload(); 
+                else
+                layer.msg(v.msg, {icon: 2,time: 1000}); //alert(v.msg);
+            }
+        })
+    }
+</script>

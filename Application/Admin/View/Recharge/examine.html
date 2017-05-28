@@ -1,0 +1,137 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>提现审核</h3>
+                <h5>提现审核</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="admin_add" action="{:U('Recharge/examine')}" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">提现会员</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text"  value="{$res.user_name}" class="input-txt" readonly>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">提现金额</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text"  value="{$res.withdrawal_money}" class="input-txt" readonly>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">提现时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$res['withdrawal_time']|date="Y-m-d H",###}" class="input-txt" readonly>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+     <!--        <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">提现手续费</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$res.withdrawal_poundage}" name="withdrawal_poundage" class="input-txt">
+                    <p class="notic"></p>
+                </dd>
+            </dl> -->
+          <!--   <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">到账金额</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text"  value="{$res.withdrawal_actual}" class="input-txt">
+                    <p class="notic"></p>
+                </dd>
+            </dl> -->
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">真实姓名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$res.real_name}" class="input-txt" readonly>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">银行名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$res.bank_name|getbankname}" class="input-txt" readonly>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">银行账号</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text"  value="{$res.bank_card}"  class="input-txt" readonly>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">银行开户行</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text"  value="{$res.bank_card_open}"  class="input-txt" readonly>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">提现状态</label>
+                </dt>
+                <dd class="opt">
+                    <input type="radio" name="status" value="2">通过
+                    <input type="radio" name="status" value="4">拒绝
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name">处理理由</label>
+                </dt>
+                <dd class="opt">
+                    <textarea rows="8" cols="45" name="examine_desc">{$res.examine_desc}</textarea>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+        <input type="hidden" name="id" value="{$res.withdrawal_id}">
+        <input type="hidden" name="user_id" value="{$res.user_id}">
+    </form>
+</div>
+<script type="text/javascript">
+    // 判断输入框是否为空
+    function adsubmit(){
+        // if($('input[name=status]').val() == ''){
+        //     layer.msg('用户名不能为空！', {icon: 2,time: 1000});   //alert('少年，用户名不能为空！');
+        //     return false;
+        // }
+        // if($('input[name=admin_password]').val() == ''){
+        //     layer.msg('密码不能为空！', {icon: 2,time: 1000});//alert('少年，密码不能为空！');
+        //     return false;
+        // }
+        $('#admin_add').submit();
+    }
+</script>
+</body>
+</html>

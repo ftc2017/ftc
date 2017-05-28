@@ -1,0 +1,55 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>逾期收益管理</h3>
+                <h5>逾期收益管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="admin_add" action="{:U('overout_count_list')}" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="project_name">众筹项目名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="project_name" value="{$info.project_name}" readonly id="project_name" class="input-txt">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="project_money">众筹金额</label>
+                </dt>
+                <dd class="opt">
+                    <input type="texy" name="project_money" value="{$info.project_money}" readonly id="project_money" class="input-txt">
+                </dd>
+            </dl>
+             <dl class="row">
+                <dt class="tit">
+                    <label for="lending">逾期率</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="lending" value="{$info.lending}" id="lending" class="input-txt">
+                    *逾期回购投资人所得收益为：投资本金*(逾期率/万)*逾期天数
+                </dd>
+            </dl>
+            <input type="hidden" name="project_id" value="{$info.project_id}" id="project_id" class="input-txt">
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    // 判断输入框是否为空
+    function adsubmit(){
+       var num =$('#lending').val();
+       var id =$('#project_id').val();
+       $("#admin_add").submit();
+    }
+</script>

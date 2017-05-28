@@ -1,0 +1,197 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>红包管理</h3>
+                <h5>筛选用户</h5>
+            </div> 
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>筛选用户</li>
+        </ul>
+    </div>
+
+    <div class="flexigrid">
+        <div class="hDiv">
+             <form class="navbar-form form-inline" id="search-form" method="get" action="{:U('gain')}" onsubmit="return check_form();">
+                <div class="sDiv">
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="start_time" name="start_time" value="{$start_time}" placeholder="注册时间（开始）" class="qsbox">
+                        <input type="button" class="btn" value="开始">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="end_time" name="end_time" value="{$end_time}" placeholder="注册时间（结束）" class="qsbox">
+                        <input type="button" class="btn" value="结束">
+                    </div>
+                     <div class="sDiv2" style="margin-right: 10px;">
+                    <input size="30" id="tkeyword" name="tkeyword" value="{$Think.request.tkeyword}" placeholder="个人投资金额" class="qsbox" type="number">
+                    </div>
+                    <div class="sDiv2">
+                        <input size="30" id="keyword" name="keyword" value="{$Think.request.keyword}" placeholder="推荐人投资金额" class="qsbox" type="number">
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                </div>
+            </form>
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">
+                                <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);">
+                            </div>
+                        </th>
+                       <!--  <th align="center" abbr="article_title" axis="col3">
+                            <div style="text-align: center; width: 120px;">ID</div>
+                        </th> -->
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: center; width: 120px;">用户名</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: center; width: 260px;">真实姓名</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: center; width: 260px;">手机号</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: center; width: 140px;">推荐人</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: center; width: 180px;">可用余额</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: center; width: 200px;">冻结金额</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5">
+                            <div style="text-align: center; width: 180px;">注册时间</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <form id="myform1">
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                        <volist name="users_list" id="v">
+                        <tr>
+                            <td align="left">
+                                <div>
+                                    <input type="checkbox" name="uids[]" value="{$v['user_id']}">
+                                </div>
+                            </td>
+
+                            <td align="center">
+                                <div style="text-align: center; width: 100px;">{$v.user_name}</div>
+                            </td>
+                            <td align="center">
+                                <div style="text-align: center; width: 100px;">{$v.real_name}</div>
+                            </td>
+                            <td align="center">
+                                <div style="text-align: center; width: 100px;">{$v.mobile}</div>
+                            </td>
+                            <td align="center">
+                                <div style="text-align: center; width: 100px;">{$v.a_user_name}</div>
+                            </td>
+                            <td align="center">
+                                <div style="text-align: center; width: 100px;">{$v.user_money}</div>
+                            </td>
+                            <td align="center">
+                                <div style="text-align: center; width: 100px;">{$v.frozen_money}</div>
+                            </td>
+                            <td align="center">
+                                <div style="text-align: center; width: 100px;">{$v.reg_time|date="Y-m-d",###}</div>
+                            </td>
+                        </tr>
+                        </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <div class="tDiv">
+            <div class="tDiv2">
+                <div class="fbutton">
+                    <a onclick="post_form('myform1','__URL__/gainok');">  
+                        <div class="add" title="确认发放">
+                            <span><i class="fa fa-check"></i>确认发放</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div style="clear:both"></div> 
+        </div>
+        <input type="hidden" name="pid" value="{$Think.get.id}">
+        </form>
+    </div>
+</div>
+<script>
+$('#start_time').layDate();
+$('#end_time').layDate();
+
+ function check_form(){
+    var start_time = $.trim($('#start_time').val());
+    var end_time =  $.trim($('#end_time').val());
+    if(start_time == '' ^ end_time == ''){
+        layer.alert('请选择完整的时间间隔', {icon: 2});
+        return false;
+    }
+    if(start_time !== '' && end_time !== ''){
+        $('#create_time').val(start_time+" - "+end_time);
+    }
+    if(start_time > end_time){
+        layer.alert('请选择的结束时间大于开始时间', {icon: 2});
+        return false;
+    }
+
+    return true;
+}
+
+
+function post_form(form_id,subbmit_url){
+    if(form_id == '' && subbmit_url == ''){
+        alert('缺少必要参数');
+        return false;
+    }
+    if (!confirm('确认发放？')) {
+        return false;
+    };
+    //  序列化表单值
+    var data = $('#'+form_id).serialize();
+
+    $.post(subbmit_url,data,function(result){
+        var obj = result;
+        if(obj.status == 0){
+            alert(obj.info);
+            return false;
+        }
+        if(obj.status == 1){
+            layer.msg(obj.info, {
+                                  icon: 1,
+                                  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                  if(obj.url){
+                                            location.href = obj.url;
+                                    }else{
+                                        location.href = location.href;
+                                    }
+                                });
+            return;
+        }
+    })
+}
+</script>

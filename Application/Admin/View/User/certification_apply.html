@@ -1,0 +1,203 @@
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+	<div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>会员管理</h3>
+                <h5></h5>
+            </div> 
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>实名认证管理</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="Div">
+            <form class="navbar-form form-inline" id="search-form" method="post" action="{:U('certification_apply')}">
+            	
+                <div class="sDiv">
+                	<div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="start_time" name="start_time" value="{$start_time}" placeholder="申请时间（开始）" class="qsbox">
+                        <input type="button" class="btn" value="申请时间（开始）">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="end_time" name="end_time" value="{$end_time}" placeholder="申请时间（结束）" class="qsbox">
+                        <input type="button" class="btn" value="申请时间（结束）">
+                	</div>
+                	<!-- <div class="sDiv2" style="margin-right: 10px;border: none;">
+                        <select id="is_id_card" name="is_id_card" class="form-control">
+                            <option value="">请选择</option>
+                            <option value="0">已认证</option>
+                            <option value="1" <if condition="$_REQUEST['is_id_card'] eq 1">selected</if>>待认证</option>
+                        </select>
+                    </div> -->
+                    <div class="sDiv2">
+                        <input size="50" value="{$Think.request.keyword}" name="keyword" placeholder="会员名/真实姓名/身份证号" style="width:200px;" class="qsbox" type="text">
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                </div>
+            </form>
+            <div style="clear:both"></div>
+        </div>
+         
+        <!--支付插件-->
+        <div class="bDiv" id="tab_pay">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <thead>
+                    <tr> 
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: left; width: 80px;" class="">id</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col3" class="">
+                            <div style="text-align: center; width: 80px;" class="">会员名</div>
+                        </th>
+                        <th align="left" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: left; width: 120px;" class="">真实姓名</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">身份证</div>
+                        </th>
+                       <!--  <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">身份证照片</div>
+                        </th> -->
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">上传时间</div>
+                        </th>
+                       <!--  <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">审核状态</div>
+                        </th>
+                        <th align="left" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">操作</div>
+                        </th> -->
+                        <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 1250px;"></div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="list" id="p">
+                        <tr>
+                            <td class="sign">
+                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$p.user_id}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$p.user_name}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 120px;">{$p.real_name}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 140px;">{$p.id_card}</div>
+                            </td>
+                          <!--   <td align="left" class="">
+                                <div style="text-align: center; width: 120px;">
+                                    <a href="{$p.card_pic_positive|getPicPath}" class="pic-thumb-tip" onMouseOver="layer.tips('<img style=\'width:400px;\' src={$p.card_pic_positive|getPicPath}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"><i class="fa fa-picture-o"></i></a>
+                                    <a href="{$p.card_pic_reverse|getPicPath}" class="pic-thumb-tip" onMouseOver="layer.tips('<img style=\'width:400px;\' src={$p.card_pic_reverse|getPicPath}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"><i class="fa fa-picture-o"></i></a>
+                                </div>
+                            </td> -->
+                           
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 140px;">{$p.id_card_time|date="Y-m-d",###}</div>
+                            </td>
+                           <!--  <td align="left" class="">
+                            	<if condition="$p[is_id_card] eq 2">
+                             	<div style="text-align: center; width: 140px;">已拒绝</div>
+                            	<else/>
+                                <div style="text-align: center; width: 140px;">{$p[is_id_card]==0 ? '已认证':'待审核'}</div>
+                                </if>
+                            </td> -->
+                            <!--  <td align="left" class="">
+                             	<if condition="$p[is_id_card] neq 0">
+                             	<div style="text-align: center; width: 170px; max-width:170px;">
+                                	<a href="javascript:void(0)" class="btn blue" onclick="pass('{$p[user_id]}')">通过</a>
+	                                <if condition="$p[is_id_card] neq 2">
+	                                	<a class="btn red"  href="javascript:void(0)" onclick="nopass('{$p[user_id]}')">不通过</a>
+	                            	</if>
+                            	</div>
+                            	</if>
+                            </td> -->
+                            <td align="center" class="handle">
+
+                                <div style="text-align: center; width: 250px; max-width:250px;">
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--支付插件-->
+     </div>
+</div>
+<script>
+ $('#start_time').layDate();
+        $('#end_time').layDate();
+ function pass(obj) {
+		layer.confirm('确认通过？', {
+			btn: ['确定', '取消'] //按钮
+		}, function () {
+			$.ajax({
+				type: 'post',
+				url: "/index.php?m=Admin&c=user&a=apply_pass",
+				data : {status:'0',id:obj},
+				dataType: 'json',
+				success: function (data) {
+					if (data.status == 1) {
+						layer.closeAll();
+						location.href = location.href;
+					} else {
+						layer.alert('操作失败', {icon: 2});  //alert('删除失败');
+					}
+				}
+			})
+		}, function () {
+		});
+	}
+ function nopass(obj) {
+		layer.confirm('确认拒绝？', {
+			btn: ['确定', '取消'] //按钮
+		}, function () {
+			$.ajax({
+				type: 'post',
+				url: "/index.php?m=Admin&c=user&a=apply_pass",
+				data : {status:'2',id:obj},
+				dataType: 'json',
+				success: function (data) {
+					if (data.status == 1) {
+						layer.closeAll();
+						location.href = location.href;
+					} else {
+						layer.alert('操作失败', {icon: 2});  //alert('删除失败');
+					}
+				}
+			})
+		}, function () {
+		});
+	}
+</script>
+</body>
+</html>

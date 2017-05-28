@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>后台管理系统</title>
+
+    <!-- Bootstrap Core CSS -->
+	<link href="__PUBLIC__/css/bootstrap.css" rel="stylesheet">
+
+	<!-- Custom Fonts -->
+	<link href="__PUBLIC__/css/font-awesome.css" rel="stylesheet" type="text/css">
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<style>
+.error{border-color: rgb(251, 5, 5); outline: 0; -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(251,5,5,0.6); box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(251,5,5,0.6);}
+</style>
+<body>
+
+    <div class="container">
+        <div class="row" style="margin-top:25%;">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">请登录</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" action="{:U('Account/login')}" method="post">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control verify" placeholder="用户名" id="name" name="name" type="text" tabindex="1" autofocus>
+                                    <span class="tishinr"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="密码" id="password" name="password" type="password" value="" tabindex="2">
+                                    <span class="tishinr"></span>
+                                </div>
+                                <div class="checkbox">
+                                	<a href="javascript:;" class="js_verify" title="看不清？换一张！"><img src="#" class="verify" /></a>
+                                    <input type="text" id="verify" name="verify" class="form-control pull-right" placeholder="验证码" style="width:150px;" tabindex="3">
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <button class="btn btn-lg btn-success btn-block js_log">登陆</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="__PUBLIC__/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="__PUBLIC__/js/bootstrap.js"></script>
+<script>
+$('.js_verify').bind('click', function(){
+	var rand = Math.floor(1 + Math.random() * (999 - 1));
+	var src = "/Biz/Account/verify?" + rand;
+	$(this).find('img').attr('src', src);
+}).trigger('click');
+</script>
+<script type="text/javascript">
+$(function(){
+    $('[autofocus]').focus();
+
+	$(".js_log").on("click", function(){
+		var name = $("#name").val();
+        if (!name) {
+             $("#name").addClass('error');
+             $("#name").nextAll('.tishinr').text('请输入用户名');
+             return false;
+        }else{
+            $("#name").removeClass('error');
+            $("#name").nextAll('.tishinr').text('');
+        };
+        var password = $("#password").val();
+        if (!password) {
+             $("#password").addClass('error');
+             $("#password").nextAll('.tishinr').text('请输入密码');
+             return false;
+        }else{
+            $("#password").removeClass('error');
+            $("#password").nextAll('.tishinr').text('');
+        };
+        var verify = $("#verify").val();
+        if (!verify) {
+             $("#verify").addClass('error');
+             // $("#verify").nextAll('.tishinr').text('请输入验证码');
+             return false;
+        }else{
+            $("#verify").removeClass('error');
+            // $("#verify").nextAll('.tishinr').text('');
+        };
+	    $.post("{:U('Account/login')}", {name:name,password:password,verify:verify}, function(data){
+	    	var obj = eval("("+data+")");
+	        if(obj.status == 1){
+	            window.location = "{:U('Index/index')}";
+	        }else {
+	        	alert(obj.info);
+                $('.js_verify').trigger('click');
+                $('#verify').val('');
+	        }
+	    })
+	    return false;
+	})
+})
+</script>
+</body>
+
+</html>
